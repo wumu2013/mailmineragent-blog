@@ -1,0 +1,65 @@
+baseURL = "https://mailmineragent.com"
+languageCode = "en-us"
+title = "MailMiner Agent Blog"
+theme = "PaperMod"
+[pagination]
+  pagerSize = 10
+enableRobotsTXT = true
+
+[[menu.main]]
+  identifier = "mailminer"
+  name = "MailMiner"
+  url = "https://mailminer.work"
+  weight = 10
+
+[[menu.main]]
+  identifier = "posts"
+  name = "Posts"
+  url = "/posts/"
+  weight = 20
+
+[[menu.main]]
+  identifier = "search"
+  name = "Search"
+  url = "/search/"
+  weight = 30
+
+[[menu.main]]
+  identifier = "tags"
+  name = "Tags"
+  url = "/tags/"
+  weight = 40
+
+[params]
+  description = "Technical blog about MailMiner Agent — AI-powered email mining, intelligent automation, and data extraction."
+  author = "MailMiner Team"
+  defaultTheme = "auto"
+  ShowShareButtons = true
+  ShowReadingTime = true
+  ShowToc = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+  ShowPostNavLinks = true
+  ShowFullTextinRSS = true
+
+  [params.homeInfoParams]
+    Title = "Welcome to MailMiner Agent Blog"
+    Content = "Exploring AI-powered email mining, intelligent data extraction, and automation. Technical deep dives, architecture discussions, and practical guides."
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/wumu2013/mailmineragent-blog"
+
+  [[params.socialIcons]]
+    name = "mailminer"
+    url = "https://mailminer.work"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    noClasses = false
