@@ -1,0 +1,191 @@
+---
+title: "Why ClaudeCode / OpenCode + DeepSeek Cannot Unlock DeepSeek's Ultra-Low Cache Discounts"
+date: 2026-05-27
+draft: false
+tags: ["LLM", "AgentDevelopment", "CostOptimization", "DeepSeek", "Anthropic", "PromptCaching", "CodeAgent", "APIEngineering"]
+description: "A critical architecture mismatch between segmented cache_control agents and strict full-prefix automatic caching — and why mixing these stacks wastes your biggest cost-saving feature."
+---
+
+## Introduction
+
+DeepSeek's disk-based automatic context caching is famous for **near 90% input token savings**: cached prefix tokens cost just a tiny fraction of standard input pricing, with zero manual configuration required. Thousands of developers switch to DeepSeek chasing this aggressive discount for long system prompts, code rules, and repeated tool definitions.
+
+But a costly reality hits teams running **ClaudeCode / OpenCode (code agent runtimes built for Anthropic-style `cache_control`)** against the DeepSeek API:
+
+> Even with DeepSeek caching enabled globally, your cache hit rate collapses to near-zero, and you never see the promised ultra-low cached token billing.
+
+This is not a bug, nor misconfiguration. It is a fundamental **architectural incompatibility** between two entirely different caching paradigms: Anthropic's manual segmented block caching, and DeepSeek's rigid full-sequence prefix-only matching.
+
+In this post, we break down the mechanics, agent workflow pain points, and why mixing these stacks wastes your biggest cost-saving feature.
+
+---
+
+## 1. Core Background: How Each Caching System Works
+
+### 1.1 DeepSeek Automatic Prefix Cache (Strict Rule Set)
+
+DeepSeek enables caching for all API keys by default, with one non-negotiable matching rule:
+
+✅ **A cache hit only triggers when the full token sequence starts identical from index `0` (the very first token).**
+
+- The entire `messages[]` array must be an exact prefix extension: new content can only be **appended to the END** of the list.
+- Any insertion, deletion, or content change *anywhere before the final position* breaks the full prefix hash → **full cache miss**.
+- No manual tagging, no custom breakpoints, no separate cache segments; the entire message chain is treated as one single prefix unit.
+- Pricing benefit: Miss = full standard input cost; Hit = ultra-low discounted rate for matched prefix tokens.
+
+### 1.2 Anthropic `cache_control` Segmented Block Caching (What OpenCode / ClaudeCode Relies On)
+
+Anthropic designed `cache_control` explicitly for dynamic agent workflows:
+
+- Developers add a `cache_control` tag inside **individual content blocks** (system prompts, tool definitions, static rule chunks) to create independent cache segments.
+- Up to four isolated cache breakpoints per request; each segment has its own TTL (`ephemeral` / `long_lived`) and independent storage.
+- Critical advantage: **Modifications to later blocks do NOT invalidate earlier cached segments**. If you insert `tool_use` / `tool_result` messages between marked static blocks, the pre-tagged system/tool definitions remain cached at discounted pricing.
+
+OpenCode / ClaudeCode are hardcoded to inject these `cache_control` markers automatically for long system rules, code guidelines, and tool schemas — this is their core cost-optimization logic for multi-turn code agents.
+
+### The First Hard Block: DeepSeek Ignores `cache_control` Entirely
+
+When OpenCode sends requests with embedded `cache_control` fields:
+
+1. DeepSeek's API silently **drops the unknown field** and does not parse any manual segment tags.
+2. No independent blocks are created; the entire `messages` list is still evaluated as one single full prefix.
+3. LiteLLM / proxy gateways also strip the field before forwarding to avoid invalid parameter errors.
+
+Your agent's intelligent segmented caching logic becomes completely invisible to DeepSeek.
+
+---
+
+## 2. Why Code Agent Workflows Destroy DeepSeek's Prefix Match
+
+Standard code agents (ClaudeCode / OpenCode) run a repeating loop that **guarantees middle-position message insertion** — the exact scenario that breaks full-prefix caching.
+
+### Step-by-Step Agent Loop Breakdown
+
+1. **Initial request:**
+   `[SystemPrompt (code rules) → User task]`
+   DeepSeek caches this full 2-block prefix after first call.
+
+2. Model returns `assistant` with `tool_calls` (file read, shell run, code edit).
+
+3. **Critical breaking step**: Your agent appends a standalone `role: tool` message **between the last assistant and the next user message**, not only at the list tail.
+
+   New full sequence:
+   `[System → User → Assistant(tool_call) → ToolResult]`
+
+#### What happens on DeepSeek side:
+
+- The original cached prefix was length `3` items; new request has `4` items total.
+- Even though the first three messages are textually identical, the **overall sequence length and array structure differ** from the stored prefix hash.
+- Result: **100% cache miss**; you pay full price for the entire long system prompt every round.
+
+### Additional Failure Modes in Multi-Agent Setups
+
+Most code platforms run **multiple specialized agents**, each with its own unique system prompt:
+
+- Agent A: Code writer system rules
+- Agent B: Linter & reviewer system rules
+- Agent C: Shell executor rules
+
+With DeepSeek prefix caching:
+
+- Every unique system prompt creates a separate cache entry.
+- No cross-agent sharing of common content (shared tool definitions, global coding constraints), because the starting `system` block differs per agent.
+- Cache storage fills rapidly with fragmented entries; LRU eviction purges frequently used static prompts, worsening miss rates further.
+
+### Dynamic Variables Inside System Prompts Kill Consistency
+
+OpenCode commonly injects real-time variables into system prompts:
+
+- Current date (resets daily)
+- Project working directory / file paths (switches per workspace)
+
+Even minor text changes at the **start of the system block** rewrite the full prefix hash. DeepSeek cannot isolate the fixed rule portion; the entire thousands-of-token prompt misses cache overnight or on workspace switch.
+
+> With Anthropic segmented caching: only the small dynamic date/path segment re-runs the write premium; massive static code rules stay cached daily.
+
+---
+
+## 3. The Cost Gap: Real-World Comparison
+
+### Scenario: 15-turn code agent run | 12k-token static system prompt
+
+#### A) Native Claude + `cache_control`
+- 1x write premium for system/tool blocks
+- Next 14 rounds: static segments hit 10% discounted read pricing
+- Total input cost: ~2.15 × base price
+
+#### B) OpenCode + DeepSeek (default deployment)
+- Every tool insertion = full cache miss on all turns
+- You pay full standard input cost for the 12k system prompt **15 times consecutively**
+- Total input cost: 15 × base price → **~7x more expensive** than expected DeepSeek discount
+
+#### C) Pure DeepSeek simple chat (only tail-appended messages)
+- Stable full prefix hit every turn
+- Total input cost: ~1.8 × base price (maxed DeepSeek discount)
+
+The agent workflow eliminates all DeepSeek economic benefits entirely.
+
+---
+
+## 4. Can We Fix This With Workarounds?
+
+### Workaround 1: Remove all `cache_control` injection
+
+Disabling automatic tagging makes requests valid for DeepSeek, but does **not solve the core prefix-break issue** during tool calls. Hit rates remain extremely low.
+
+### Workaround 2: Force all dynamic content to the very end of `messages[]`
+
+Move dates, paths, and variable data strictly after all static system rules and history. This slightly improves hit rates for simple chats, but **cannot fix middle `tool` message insertion** in agent loops.
+
+### Workaround 3: Pre-warm fixed prefixes
+
+Pre-send requests for all agent system templates to populate cache ahead of traffic. This helps static one-off calls but fails for tool loops, as insertion still invalidates matches.
+
+### Hard Truth
+
+There is **no reliable workaround** to make Anthropic-style segmented agents work with DeepSeek full-prefix caching. The two systems have opposing design constraints.
+
+---
+
+## 5. Two Valid Deployment Options
+
+### Option A: Keep OpenCode / ClaudeCode → Use Anthropic / MiniMax natively
+
+These models natively support `cache_control` block segmentation. Tool insertions only affect variable segments; static system/tool definitions retain discounted reads. This matches your agent runtime's built-in optimization logic perfectly.
+
+### Option B: Keep DeepSeek → Rewrite agent logic for strict full-prefix workflow
+
+Mandate these rules for your agent:
+
+1. Never insert `tool` messages anywhere except the absolute end of the message array.
+2. Freeze the full system prompt structure; avoid dynamic dates/paths inside the leading system block.
+3. Disable all `cache_control` injection in OpenCode.
+
+This enables DeepSeek's automatic caching, but sacrifices flexible multi-agent & complex tool workflows.
+
+### Never Recommend: Hybrid `OpenCode + DeepSeek`
+
+It combines the overhead of an agent built for segmented caching with a model that cannot honor that logic — you pay double engineering cost with zero discount gains.
+
+---
+
+## Conclusion
+
+DeepSeek's automatic prefix caching delivers industry-leading savings **only for simple sequential conversations where new messages are exclusively appended to the end**.
+
+Runtimes like ClaudeCode / OpenCode are engineered around Anthropic's flexible `cache_control` block tagging, designed for dynamic agent loops with mid-sequence tool message insertion. When paired with DeepSeek:
+
+1. `cache_control` tags are ignored; no segmented caching occurs.
+2. Tool result insertion breaks the mandatory full-start prefix match every turn.
+3. Cache hit rates plummet, and you never receive DeepSeek's advertised ultra-low cached token pricing.
+
+Choose your stack based on caching architecture, not just per-token sticker price:
+
+- **Complex code agents with frequent tool calls** → Anthropic / MiniMax (`cache_control` native support)
+- **Simple long-chat workloads with fixed trailing history** → DeepSeek automatic prefix cache
+
+---
+
+### Author Note
+
+If you audit your API usage dashboards and see `prompt_cache_hit_tokens` near zero despite enabling DeepSeek caching, this architecture mismatch is almost certainly the root cause.
