@@ -2,6 +2,8 @@ baseURL = "https://mailmineragent.com"
 languageCode = "en-us"
 title = "MailMiner Agent Blog"
 theme = "PaperMod"
+buildFuture = true
+
 [pagination]
   pagerSize = 10
 enableRobotsTXT = true
