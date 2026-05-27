@@ -80,6 +80,162 @@
 <p>Questions for you: Where have you found AI outputs to be wastefully verbose? And does the idea of AI-to-AI compressed communication feel natural to you, or does it feel like a step backward? I&rsquo;d genuinely like to hear your perspective—drop it in the comments.</p>
 <hr>
 <p><em>If you found this useful, consider subscribing. I write about AI engineering, cost optimization, and the practical realities of building with large language models.</em></p>
+]]></content:encoded></item><item><title>Every Enterprise Needs an LLM Gateway: Why API Key Management Is the New Router Problem</title><link>https://mailmineragent.com/posts/llm-gateway-every-enterprise-needs-one/</link><pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/llm-gateway-every-enterprise-needs-one/</guid><description>A security researcher scanned 900 public config files and found 41 live cloud API keys. This is the new credential sprawl crisis — and the fix is the same pattern that solved home networking two decades ago.</description><content:encoded><![CDATA[<h2 id="the-security-audit-that-should-terrify-you">The Security Audit That Should Terrify You</h2>
+<p>A security researcher recently scanned 900 publicly accessible configuration files on GitHub. Within minutes, they found <strong>41 valid, active cloud service API keys</strong> — keys that granted immediate, unauthenticated access to production servers. No brute force, no social engineering. Just a simple <code>git grep</code> across misconfigured repos.</p>
+<p>This is not a hypothetical vulnerability. This is happening right now, at scale, across thousands of organizations.</p>
+<p>Every one of those 41 keys could be used to:</p>
+<ul>
+<li>Spin up GPU instances on someone else&rsquo;s bill</li>
+<li>Exfiltrate internal databases through API access</li>
+<li>Impersonate the application to end users</li>
+</ul>
+<p>And here&rsquo;s the uncomfortable truth: if your team uses LLM APIs — OpenAI, Anthropic, DeepSeek, or any of the dozens of providers — you almost certainly have the same problem. The only difference is you haven&rsquo;t been scanned yet.</p>
+<hr>
+<h2 id="the-problem-credential-sprawl">The Problem: Credential Sprawl</h2>
+<p>Modern AI-powered applications touch multiple LLM providers. A typical setup might look like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># .env — lives on every developer&#39;s machine</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">OPENAI_API_KEY=sk-...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">ANTHROPIC_API_KEY=sk-ant-...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">DEEPSEEK_API_KEY=sk-...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="l">REPLICATE_API_KEY=r8-...</span><span class="w">
+</span></span></span></code></pre></div><p>Each of these keys is a skeleton key to your cloud bill. But here&rsquo;s how they actually get managed in practice:</p>
+<ul>
+<li><strong>Hardcoded in source code</strong> — AI coding assistants generate boilerplate fast, and secrets end up in committed files</li>
+<li><strong>Scattered across <code>.env</code> files</strong> — every developer, every staging server, every CI runner has a copy</li>
+<li><strong>Shared team-wide</strong> — one key for everyone, impossible to revoke without breaking everything</li>
+<li><strong>Stored in plaintext configs</strong> — <code>config.json</code>, <code>docker-compose.yml</code>, even <code>README.md</code> examples</li>
+</ul>
+<p>The worst part? Most teams don&rsquo;t discover the leak until the bill arrives.</p>
+<blockquote>
+<p>A startup I spoke with discovered their OpenAI key had been exposed for six months. The attacker had been quietly running inference workloads, racking up $47,000 in charges. The breach was only noticed when the monthly bill tripled. By then, the key had already been rotated five times — and each rotation only temporarily stopped the bleeding because the key was still embedded in deployed containers.</p>
+</blockquote>
+<hr>
+<h2 id="why-this-is-the-router-problem-all-over-again">Why This Is the Router Problem All Over Again</h2>
+<p>Twenty years ago, every device in a home needed a public IP address to access the internet. This was a nightmare: finite IPv4 addresses, security nightmares, impossible management. Then someone invented the home router.</p>
+<p>The router solved three things:</p>
+<ol>
+<li><strong>Centralized access</strong> — one public IP for the whole house</li>
+<li><strong>Isolation</strong> — internal devices stay invisible from outside</li>
+<li><strong>Management</strong> — add/remove devices without rewiring the street</li>
+</ol>
+<p>Every home has a router today. Not because everyone understands networking — because the problem was universal and the solution was simple.</p>
+<p>LLM API key management is the same story. Today, every application, every microservice, every developer tool holds its own API key directly. This is the pre-router era of AI infrastructure. What you need is an <strong>LLM gateway</strong> — a centralized proxy that sits between your applications and every LLM provider.</p>
+<pre tabindex="0"><code>┌─────────────┐     ┌──────────────┐     ┌─────────────┐
+│ Application  │     │              │     │   OpenAI    │
+│    A         │────▶│              │────▶│─────────────│
+├─────────────┤     │  LLM Gateway │     │  Anthropic  │
+│ Application  │     │  (proxy)     │────▶│─────────────│
+│    B         │────▶│              │     │  DeepSeek   │
+├─────────────┤     │  Key Mgmt    │     ├─────────────┤
+│ Application  │     │  Cost Logs   │     │  Replicate  │
+│    C         │────▶│  Rate Limit  │     └─────────────┘
+└─────────────┘     └──────────────┘
+</code></pre><p>Applications never hold provider keys. They only know the gateway.</p>
+<hr>
+<h2 id="what-an-llm-gateway-actually-does">What an LLM Gateway Actually Does</h2>
+<h3 id="1-key-centralization">1. Key Centralization</h3>
+<p>All provider API keys live in one place — the gateway server. Applications authenticate to the gateway with short-lived, application-specific virtual keys. If a key is compromised, you revoke one virtual key without touching the underlying provider keys or affecting other applications.</p>
+<h3 id="2-provider-abstraction">2. Provider Abstraction</h3>
+<p>Your application sends OpenAI-format requests to the gateway. The gateway translates and routes to any provider. Switch from GPT-4 to Claude to DeepSeek with a config change — no code changes needed.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Before: hardcoded provider in every service</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">ChatCompletion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">model</span><span class="o">=</span><span class="s2">&#34;gpt-4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&#34;OPENAI_API_KEY&#34;</span><span class="p">],</span>  <span class="c1"># exposed everywhere</span>
+</span></span><span class="line"><span class="cl">    <span class="n">messages</span><span class="o">=</span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># After: gateway handles routing</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&#34;http://gateway:4000/v1/chat/completions&#34;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;model&#34;</span><span class="p">:</span> <span class="s2">&#34;gpt-4&#34;</span><span class="p">,</span>          <span class="c1"># or &#34;claude-3-opus&#34;, &#34;deepseek-chat&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;messages&#34;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;Authorization&#34;</span><span class="p">:</span> <span class="s2">&#34;Bearer vk-xxxx&#34;</span>  <span class="c1"># virtual key, one per app</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
+</span></span></code></pre></div><h3 id="3-cost-visibility">3. Cost Visibility</h3>
+<p>Every request gets logged with model, token count, latency, and cost. Teams get a dashboard showing:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;app&#34;</span><span class="p">:</span> <span class="s2">&#34;customer-support-bot&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;model&#34;</span><span class="p">:</span> <span class="s2">&#34;gpt-4o&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;input_tokens&#34;</span><span class="p">:</span> <span class="mi">12500</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;output_tokens&#34;</span><span class="p">:</span> <span class="mi">340</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;cost&#34;</span><span class="p">:</span> <span class="mf">0.042</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;latency_ms&#34;</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;timestamp&#34;</span><span class="p">:</span> <span class="s2">&#34;2026-05-27T10:30:00Z&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>No more surprise bills. You can set per-application budgets and get alerts before costs spiral.</p>
+<h3 id="4-intelligent-routing">4. Intelligent Routing</h3>
+<ul>
+<li><strong>Cost optimization</strong>: route transcription to cheap models, complex reasoning to premium ones</li>
+<li><strong>Load balancing</strong>: distribute requests across multiple provider accounts to avoid rate limits</li>
+<li><strong>Failover</strong>: if one provider is down, automatically retry on another</li>
+<li><strong>Rate limiting</strong>: prevent any single application from consuming the entire budget</li>
+</ul>
+<hr>
+<h2 id="open-source-solution-litellm">Open Source Solution: LiteLLM</h2>
+<p>The most mature open source LLM gateway is <a href="https://github.com/BerriAI/litellm">LiteLLM</a> — 48,000+ stars on GitHub, used by Stripe, Netflix, and Google.</p>
+<p>Key capabilities:</p>
+<ul>
+<li><strong>100+ model providers</strong> unified under a single OpenAI-compatible API</li>
+<li><strong>Virtual keys</strong> — generate per-application keys with spend limits, rate limits, and expiration</li>
+<li><strong>Request logging</strong> — full audit trail of every LLM call</li>
+<li><strong>Budget controls</strong> — set spend limits per key, per user, per project</li>
+<li><strong>Model fallback</strong> — automatic retry with different models on failure</li>
+<li><strong>Docker deployment</strong> — one container, zero dependencies</li>
+</ul>
+<p>Deploying it takes five minutes:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">docker run -d <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --name litellm-proxy <span class="se">\
+</span></span></span><span class="line"><span class="cl">  -p 4000:4000 <span class="se">\
+</span></span></span><span class="line"><span class="cl">  -e <span class="nv">OPENAI_API_KEY</span><span class="o">=</span>sk-... <span class="se">\
+</span></span></span><span class="line"><span class="cl">  -e <span class="nv">ANTHROPIC_API_KEY</span><span class="o">=</span>sk-ant-... <span class="se">\
+</span></span></span><span class="line"><span class="cl">  ghcr.io/berriai/litellm:main-latest <span class="se">\
+</span></span></span><span class="line"><span class="cl">  --config /app/config.yaml
+</span></span></code></pre></div><p>Then generate virtual keys for each application:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST http://localhost:4000/key/generate <span class="se">\
+</span></span></span><span class="line"><span class="cl">  -H <span class="s2">&#34;Authorization: Bearer sk-admin-key&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">  -H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl">  -d <span class="s1">&#39;{
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#34;max_budget&#34;: 50.0,
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#34;metadata&#34;: {&#34;app&#34;: &#34;customer-support-bot&#34;},
+</span></span></span><span class="line"><span class="cl"><span class="s1">    &#34;models&#34;: [&#34;gpt-4o&#34;, &#34;claude-3-opus&#34;]
+</span></span></span><span class="line"><span class="cl"><span class="s1">  }&#39;</span>
+</span></span></code></pre></div><p>Response:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;key&#34;</span><span class="p">:</span> <span class="s2">&#34;vk-xxxxxxxxxxxxxxxxxxxxx&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;expires&#34;</span><span class="p">:</span> <span class="s2">&#34;2026-06-27T00:00:00Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;max_budget&#34;</span><span class="p">:</span> <span class="mf">50.0</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><hr>
+<h2 id="how-enterprises-should-roll-this-out">How Enterprises Should Roll This Out</h2>
+<p>You don&rsquo;t need to do this all at once. The pragmatic rollout:</p>
+<h3 id="phase-1-centralize-week-1">Phase 1: Centralize (Week 1)</h3>
+<p>Deploy the gateway. Migrate all provider keys into the gateway config. Point existing applications to the gateway without changing application code — the gateway is OpenAI-compatible, so most SDKs work with just a base URL swap.</p>
+<h3 id="phase-2-virtualize-week-2">Phase 2: Virtualize (Week 2)</h3>
+<p>Generate one virtual key per application. Remove direct provider keys from all <code>.env</code> files, CI/CD secrets, and deployment configs. If a key leaks now, you revoke one application — not your entire infrastructure.</p>
+<h3 id="phase-3-observe-ongoing">Phase 3: Observe (Ongoing)</h3>
+<p>Enable request logging. Build a dashboard showing per-application spend, latency, and error rates. Identify which applications use expensive models where cheaper alternatives would work.</p>
+<h3 id="phase-4-optimize-ongoing">Phase 4: Optimize (Ongoing)</h3>
+<p>Set up cost-based routing. Route bulk embedding tasks to the cheapest model, production chat to the most reliable, experimental workloads to the newest. Configure automatic failover between providers.</p>
+<h3 id="phase-5-govern-when-ready">Phase 5: Govern (When ready)</h3>
+<p>Set per-application budgets, alerting thresholds, and automatic rate limiting. Implement approval workflows for expensive model access.</p>
+<hr>
+<h2 id="individual-developer-self-check">Individual Developer Self-Check</h2>
+<p>Even without a gateway, here&rsquo;s what every developer should do today:</p>
+<ol>
+<li><strong>Scan your repos</strong> — search for patterns like <code>sk-</code>, <code>api_key</code>, <code>secret</code> in your codebase. Use tools like <code>git-secrets</code> or <code>trufflehog</code> to scan git history.</li>
+<li><strong>Never commit <code>.env</code> files</strong> — add them to <code>.gitignore</code> immediately. Use <code>.env.example</code> with placeholder values instead.</li>
+<li><strong>Rotate exposed keys</strong> — if you find keys in git history, assume they&rsquo;re compromised. Rotate them now, not later.</li>
+<li><strong>Audit cloud console</strong> — check your provider dashboard for active keys. Revoke any you don&rsquo;t recognize.</li>
+<li><strong>Use separate keys per service</strong> — stop sharing one key across your entire stack. The inconvenience of managing multiple keys is trivial compared to a single point of failure.</li>
+</ol>
+<hr>
+<h2 id="the-bottom-line">The Bottom Line</h2>
+<p>API key leakage is not a matter of <em>if</em>, but <em>when</em>. The technical debt of scattered credentials compounds daily, and the explosion of LLM usage has turned a manageable problem into a systemic risk.</p>
+<p>The solution isn&rsquo;t more discipline or better training — it&rsquo;s architecture. An LLM gateway transforms credential management from a people problem into an infrastructure problem with a well-understood solution pattern.</p>
+<p>Every enterprise needs an LLM gateway today, just like every home needed a router twenty years ago. The analogy isn&rsquo;t perfect, but it&rsquo;s close enough to be actionable.</p>
+<p>Start this week. Not next quarter, not after the audit. Before your keys show up in someone else&rsquo;s scan.</p>
+<hr>
+<p><em>Have you deployed an LLM gateway in production? What&rsquo;s your experience with LiteLLM or other solutions? I&rsquo;d love to hear your stories and lessons learned.</em></p>
 ]]></content:encoded></item><item><title>Why ClaudeCode / OpenCode + DeepSeek Cannot Unlock DeepSeek's Ultra-Low Cache Discounts</title><link>https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/</link><pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/</guid><description>A critical architecture mismatch between segmented cache_control agents and strict full-prefix automatic caching — and why mixing these stacks wastes your biggest cost-saving feature.</description><content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
 <p>DeepSeek&rsquo;s disk-based automatic context caching is famous for <strong>near 90% input token savings</strong>: cached prefix tokens cost just a tiny fraction of standard input pricing, with zero manual configuration required. Thousands of developers switch to DeepSeek chasing this aggressive discount for long system prompts, code rules, and repeated tool definitions.</p>
 <p>But a costly reality hits teams running <strong>ClaudeCode / OpenCode (code agent runtimes built for Anthropic-style <code>cache_control</code>)</strong> against the DeepSeek API:</p>
