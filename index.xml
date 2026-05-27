@@ -236,6 +236,156 @@
 <p>Start this week. Not next quarter, not after the audit. Before your keys show up in someone else&rsquo;s scan.</p>
 <hr>
 <p><em>Have you deployed an LLM gateway in production? What&rsquo;s your experience with LiteLLM or other solutions? I&rsquo;d love to hear your stories and lessons learned.</em></p>
+]]></content:encoded></item><item><title>How a Solo Developer Reached TikTok US T3: Product Selection Meets AI Automation</title><link>https://mailmineragent.com/posts/tiktok-solo-seller-t3-product-selection-ai/</link><pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/tiktok-solo-seller-t3-product-selection-ai/</guid><description>One person, one month, TikTok US T3 tier. A former programmer built automated systems for product research, localized content creation, and video production — running his entire跨境 operation through AI workflows.</description><content:encoded><![CDATA[<h2 id="the-solo-seller-who-broke-the-mold">The Solo Seller Who Broke the Mold</h2>
+<p>A few weeks ago, I spoke with a TikTok seller who changed how I think about e-commerce automation.</p>
+<p>He&rsquo;s a solo operator. One person. In a single month, he hit <strong>T3 — the top seller tier on TikTok US</strong> — managing达人 outreach, short video production, shipping, and customer support entirely by himself.</p>
+<p>His background? A programmer who systematically applied software engineering principles to every aspect of his TikTok business. After hearing his workflow, I can confidently say he&rsquo;s operating at a level above 90% of TikTok merchants on the platform.</p>
+<p>This post breaks down his two core frameworks: <strong>product selection methodology</strong> and <strong>AI-powered execution</strong>.</p>
+<hr>
+<h2 id="product-selection-is-not-a-formula">Product Selection Is Not a Formula</h2>
+<p>The first thing he told me: product selection is not a one-size-fits-all formula. You need to understand your team&rsquo;s DNA first.</p>
+<h3 id="the-trend-chaser-model">The Trend-Chaser Model</h3>
+<p>One type of seller chases trends. They watch Amazon, domestic platforms, and competitor feeds. When a product goes viral, they move fast:</p>
+<ul>
+<li>Spot a trending video script on Amazon or competitor platforms</li>
+<li>Import the concept directly with localization tweaks</li>
+<li>Find substitute or upgraded versions of the trending product</li>
+<li>Identify complementary products (keyboard goes with mouse — when one heats up, the other follows)</li>
+</ul>
+<p>These sellers don&rsquo;t dig deep into categories. They follow market heat and execute quickly.</p>
+<h3 id="the-deep-dive-model">The Deep-Dive Model</h3>
+<p>The second type takes a different approach. When a competitor&rsquo;s product goes viral, they ask: <em>where can this be improved?</em></p>
+<ul>
+<li>Analyze competitor products and their own previous listings</li>
+<li>Iterate on molds, materials, or features</li>
+<li>Create genuine improvements that raise the barrier to entry</li>
+</ul>
+<p>This approach is slower to market, but the payoff is higher margins. Molds, R&amp;D, and manufacturing details create moats that platform-based sellers can&rsquo;t easily replicate.</p>
+<blockquote>
+<p>The key insight: trend-chasers and deep-divers need completely different SOPs. There is no universal product selection formula.</p>
+</blockquote>
+<h3 id="the-low-price-trap">The Low-Price Trap</h3>
+<p>One of his current products sits at the $9.99 price point — a popular, commoditized category. At that price, the financial model doesn&rsquo;t support influencer marketing or paid ads. The only viable strategy is organic traffic and product card optimization.</p>
+<p>This is a hard constraint, not a choice. Low unit price dictates the entire go-to-market strategy. Understanding this prevents wasting resources on达人 outreach for products that can never support the commission structure.</p>
+<hr>
+<h2 id="localized-content-training-ai-on-american-tv-scripts">Localized Content: Training AI on American TV Scripts</h2>
+<p>Here&rsquo;s the most creative part of his system.</p>
+<p>His problem: as a non-native English speaker, he lacks the natural cultural intuition to write TikTok scripts that resonate with American audiences. Cultural references, slang, and rhythm — these are impossible to fake without immersion.</p>
+<p>His solution: <strong>curate a dataset from American media</strong>.</p>
+<p>He collects dialogue, scripts, and conversational patterns from popular American TV series and movies. These become a training corpus. When he needs an AI to write a TikTok script, the model first learns from this curated dataset — capturing natural speech patterns, humor timing, and cultural context.</p>
+<p>The result: AI-generated scripts that sound genuinely native, not translated.</p>
+<blockquote>
+<p>Direct AI generation from the raw internet produces generic output. Curated data sources — especially culturally rich ones like TV dialogue — produce content that actually connects with the target audience.</p>
+</blockquote>
+<p>This is the same principle that powers fine-tuned language models: the quality of your seed data determines the ceiling of your output.</p>
+<hr>
+<h2 id="the-ai-9-grid-video-sop">The AI 9-Grid Video SOP</h2>
+<p>He developed a systematic approach to AI-powered video production called the <strong>9-Grid Method</strong>.</p>
+<p>Before producing a video, he uses AI to plan it as a 9-cell storyboard:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Second 1-3</th>
+					<th>Second 3-5</th>
+					<th>Second 5-8</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Hook frame</td>
+					<td>Context setup</td>
+					<td>Problem illustration</td>
+			</tr>
+			<tr>
+					<td><strong>Second 8-12</strong></td>
+					<td><strong>Second 12-15</strong></td>
+					<td><strong>Second 15-18</strong></td>
+			</tr>
+			<tr>
+					<td>Solution intro</td>
+					<td>Demo/use case</td>
+					<td>Social proof</td>
+			</tr>
+			<tr>
+					<td><strong>Second 18-21</strong></td>
+					<td><strong>Second 21-24</strong></td>
+					<td><strong>Second 24-27</strong></td>
+			</tr>
+			<tr>
+					<td>Objection handling</td>
+					<td>Call to action</td>
+					<td>Close/reiterate</td>
+			</tr>
+	</tbody>
+</table>
+<p>Each cell has a reference image and corresponding script. The AI ensures visual continuity across cells — the product, lighting, and setting remain consistent.</p>
+<p>He packaged this SOP into a reusable AI <strong>skill</strong> — a composable workflow that can be invoked on demand for any product.</p>
+<p>The limitation: current AI video generation costs are still high (~$2-3 per clip using premium models), and not every frame is usable. The approach isn&rsquo;t ready for bulk production yet, but the architecture is sound and will become more viable as costs drop.</p>
+<blockquote>
+<p><strong>Key principle</strong>: Build the SOP first, then automate it. Don&rsquo;t automate a bad process — automate a proven one.</p>
+</blockquote>
+<hr>
+<h2 id="data-asset-thinking-build-your-own-database">Data Asset Thinking: Build Your Own Database</h2>
+<p>This was his most emphatic point.</p>
+<blockquote>
+<p>&ldquo;If you let AI scrape from the open internet and generate from that, your output quality will always be average. You need to build your own curated data sources.&rdquo;</p>
+</blockquote>
+<p>Here&rsquo;s a concrete example:</p>
+<p>You need a script for selling phone cases. Option A: ask AI to &ldquo;write a TikTok script for a phone case.&rdquo; Option B: first scrape 50 top-performing phone case scripts, annotate them — product features first, pain points second, social proof at the end — then feed this structured dataset to AI and ask it to generate based on these patterns.</p>
+<p>Option B produces scripts that are in a completely different quality tier.</p>
+<p>His framework:</p>
+<ol>
+<li><strong>Collect</strong> — scrape top-performing content in your niche</li>
+<li><strong>Curate</strong> — manually annotate the structure, identify what works</li>
+<li><strong>Structure</strong> — organize into a queryable format</li>
+<li><strong>Generate</strong> — use AI with your curated dataset as context</li>
+</ol>
+<p>The curated dataset becomes a <strong>digital asset</strong> — something that compounds in value over time and creates a competitive advantage that can&rsquo;t be purchased.</p>
+<hr>
+<h2 id="model-division-of-labor-expensive-brains-cheap-hands">Model Division of Labor: Expensive Brains, Cheap Hands</h2>
+<p>He shared a practical cost optimization strategy that&rsquo;s worth implementing immediately.</p>
+<p>Premium models (Claude, GPT-4, etc.) have usage limits and higher per-token costs. His approach:</p>
+<ol>
+<li><strong>Use premium models for architecture</strong> — let the strongest model design the workflow: step 1, step 2, step 3, output format, validation rules</li>
+<li><strong>Convert the architecture into an executable workflow</strong></li>
+<li><strong>Route execution to cheap models</strong> — feed the workflow to DeepSeek or other low-cost providers for bulk execution</li>
+</ol>
+<pre tabindex="0"><code>┌────────────────────────────────────────────────┐
+│  Premium Model ($)                             │
+│  &#34;Design the SOP for phone case video script&#34;  │
+│  → Outputs: 7-step structured workflow         │
+└──────────┬─────────────────────────────────────┘
+           │
+           ▼
+┌────────────────────────────────────────────────┐
+│  Workflow Engine (Python/n8n/Dify)             │
+│  - Validates inputs                            │
+│  - Routes to execution model                   │
+│  - Collects and validates output               │
+└──────────┬─────────────────────────────────────┘
+           │
+           ▼
+┌────────────────────────────────────────────────┐
+│  Cheap Model ($$)                              │
+│  &#34;Execute step 3: generate 10 hook variants    │
+│   following this template from the SOP&#34;        │
+│  → Batch output, minimal cost                  │
+└────────────────────────────────────────────────┘
+</code></pre><p>Premium models think. Cheap models execute. This single pattern can reduce AI costs by 60-80% while maintaining output quality.</p>
+<hr>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li><strong>Product selection is team-dependent</strong> — trend-chasers and deep-divers need fundamentally different SOPs. Know your model first.</li>
+<li><strong>Price determines strategy</strong> — low-unit economics forbid influencer marketing. Match your go-to-market to your margin structure.</li>
+<li><strong>Curated data beats raw data</strong> — AI output quality is bounded by your input quality. Build curated datasets as digital assets.</li>
+<li><strong>SOP before automation</strong> — design and validate the workflow manually before committing it to code or AI.</li>
+<li><strong>Model tiering saves money</strong> — use premium models for planning and architecture, cheap models for execution. Split thinking from doing.</li>
+</ul>
+<hr>
+<p>This solo seller&rsquo;s advantage isn&rsquo;t that he uses AI — it&rsquo;s that he understands the architecture beneath it. Any one of these techniques alone is useful. Combined into a system, they transform a one-person operation into something that competes with teams of ten.</p>
+<p>The playbook is repeatable. The question is whether you&rsquo;ll invest in building the data assets and workflows before the competition does.</p>
+<hr>
+<p><em>Have you built AI-powered e-commerce workflows? What&rsquo;s working and what isn&rsquo;t? I&rsquo;d love to hear your experiences.</em></p>
 ]]></content:encoded></item><item><title>Why ClaudeCode / OpenCode + DeepSeek Cannot Unlock DeepSeek's Ultra-Low Cache Discounts</title><link>https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/</link><pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/</guid><description>A critical architecture mismatch between segmented cache_control agents and strict full-prefix automatic caching — and why mixing these stacks wastes your biggest cost-saving feature.</description><content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
 <p>DeepSeek&rsquo;s disk-based automatic context caching is famous for <strong>near 90% input token savings</strong>: cached prefix tokens cost just a tiny fraction of standard input pricing, with zero manual configuration required. Thousands of developers switch to DeepSeek chasing this aggressive discount for long system prompts, code rules, and repeated tool definitions.</p>
 <p>But a costly reality hits teams running <strong>ClaudeCode / OpenCode (code agent runtimes built for Anthropic-style <code>cache_control</code>)</strong> against the DeepSeek API:</p>
