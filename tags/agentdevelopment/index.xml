@@ -1,4 +1,86 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>AgentDevelopment on MailMiner Agent Blog</title><link>https://mailmineragent.com/tags/agentdevelopment/</link><description>Recent content in AgentDevelopment on MailMiner Agent Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 27 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://mailmineragent.com/tags/agentdevelopment/index.xml" rel="self" type="application/rss+xml"/><item><title>Why ClaudeCode / OpenCode + DeepSeek Cannot Unlock DeepSeek's Ultra-Low Cache Discounts</title><link>https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/</link><pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/</guid><description>A critical architecture mismatch between segmented cache_control agents and strict full-prefix automatic caching — and why mixing these stacks wastes your biggest cost-saving feature.</description><content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>AgentDevelopment on MailMiner Agent Blog</title><link>https://mailmineragent.com/tags/agentdevelopment/</link><description>Recent content in AgentDevelopment on MailMiner Agent Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 27 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://mailmineragent.com/tags/agentdevelopment/index.xml" rel="self" type="application/rss+xml"/><item><title>Caveman Mode: When Less Output Means More Efficiency</title><link>https://mailmineragent.com/posts/caveman-mode-efficiency-revolution/</link><pubDate>Wed, 27 May 2026 08:00:00 +0800</pubDate><guid>https://mailmineragent.com/posts/caveman-mode-efficiency-revolution/</guid><description>How a simple prompt strategy called Caveman Mode reduced AI token consumption by 65% in production React development—and what it reveals about the true cost of human-like AI responses.</description><content:encoded><![CDATA[<h2 id="the-problem-nobody-talks-about">The Problem Nobody Talks About</h2>
+<p>Every engineering team I&rsquo;ve talked to in the past six months shares the same frustration: AI coding assistants are great, until you look at the bill.</p>
+<p>Let me give you a concrete example. We ran a React development task through a standard AI assistant setup. The task: implement a feature with proper error handling. The result? <strong>20 minutes</strong> and <strong>50,300 tokens</strong> consumed. For a single feature. In production, this compounds fast—multiplied across a team of ten engineers running dozens of sessions daily, you&rsquo;re looking at serious API costs bleeding into your compute budget.</p>
+<p>Then we discovered Caveman Mode.</p>
+<p>Same task, same AI model, different prompt strategy. <strong>14 minutes</strong>. <strong>17,500 tokens</strong>. That&rsquo;s a <strong>30% speed improvement</strong> and <strong>65% token reduction</strong>. In real money, that translates to roughly 3x cost savings on API calls.</p>
+<p>This isn&rsquo;t a benchmark from a controlled lab environment. This is from actual production usage on GitHub, where the project has accumulated over 50,000 stars in under a month. The pattern is clear: <strong>AI is generating far more output than we actually need</strong>, and somewhere in that bloat is a massive efficiency opportunity.</p>
+<h2 id="what-exactly-is-caveman-mode">What Exactly Is Caveman Mode?</h2>
+<p>Caveman Mode is deceptively simple in concept. The prompt tells the AI to respond like a caveman—use one word when possible, use symbols when possible, never write a full sentence if a fragment suffices. Think: <code>&quot;function calc() { return x+y; }&quot;</code> instead of <code>&quot;Here's a function that calculates the sum of x and y by adding them together and returning the result.&quot;</code></p>
+<p>Before you dismiss this as a gimmick, consider what the AI is actually doing under the hood. Large language models generate content through probability prediction—they calculate what the next token is most likely to be. When you constrain output to core content only, you&rsquo;re effectively pre-filtering for the AI, reducing the search space across low-probability paths.</p>
+<p>Here&rsquo;s the key insight: <strong>every token the AI generates has a cost</strong>. Not just the obvious API cost—there&rsquo;s also context window overhead. A 500-token response consumes more context than a 150-token response, which means every subsequent conversation turn has to process and store that additional baggage. Shorter outputs compound their savings across the entire conversation history.</p>
+<h2 id="the-real-numbers">The Real Numbers</h2>
+<p>Let me break down what we observed across multiple React development scenarios:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Scenario</th>
+					<th>Standard Mode</th>
+					<th>Caveman Mode</th>
+					<th>Token Savings</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Feature implementation</td>
+					<td>50,300 tokens</td>
+					<td>17,500 tokens</td>
+					<td>65%</td>
+			</tr>
+			<tr>
+					<td>Error boundary handling</td>
+					<td>38,200 tokens</td>
+					<td>4,900 tokens</td>
+					<td><strong>87%</strong></td>
+			</tr>
+			<tr>
+					<td>State management refactor</td>
+					<td>44,100 tokens</td>
+					<td>15,300 tokens</td>
+					<td>65%</td>
+			</tr>
+			<tr>
+					<td>Component library setup</td>
+					<td>52,000 tokens</td>
+					<td>19,800 tokens</td>
+					<td>62%</td>
+			</tr>
+	</tbody>
+</table>
+<p>The error boundary scenario hit 87% reduction—the AI essentially stopped explaining itself and just output the code with minimal commentary. But here&rsquo;s the catch: this only works because error boundary code is structurally predictable. The AI knows exactly what shape the output should take, so compression doesn&rsquo;t lose information.</p>
+<h2 id="where-it-breaks-down">Where It Breaks Down</h2>
+<p>I&rsquo;ve been burned by over-applying Caveman Mode. Here are the scenarios where it actively hurts:</p>
+<p><strong>Language and literary tasks</strong>: Ask an AI to translate classical Chinese text—like the Dao De Jing—under Caveman constraints, and you get three words: <em>&ldquo;Dao ke dao.&rdquo;</em> Technically accurate. Completely useless. The compression destroys the contextual richness that translation requires.</p>
+<p><strong>Complex debugging</strong>: When a bug has multiple cascading causes, the AI needs to explain the causal chain. Force compression, and you get fragments that miss critical connections. I spent more time reverse-engineering the compressed output than I would have parsing a full explanation. This is the opposite of efficiency.</p>
+<p><strong>Nuanced decision-making</strong>: Any task where the &ldquo;why&rdquo; matters more than the &ldquo;what&rdquo; suffers. Architecture decisions, design rationale, trade-off discussions—these need the full context that Caveman Mode strips away.</p>
+<p>My heuristic: Caveman Mode excels at <strong>structured, predictable tasks</strong>—code generation, formula writing, data transformation. It fails at <strong>creative, explanatory, or analytical tasks</strong> where the reasoning process itself provides value.</p>
+<h2 id="the-deeper-question-is-human-like-ai-a-liability">The Deeper Question: Is Human-Like AI a Liability?</h2>
+<p>Here&rsquo;s what keeps me up at night about this.</p>
+<p>Caveman Mode saves 65% of tokens because it makes AI <strong>less human</strong>. Less natural language, fewer explanations, minimal context. The AI operates in a mode that&rsquo;s efficient but feels&hellip; mechanical.</p>
+<p>And that raises a uncomfortable question: <strong>what have we been optimizing for?</strong></p>
+<p>The entire trajectory of AI development has chased human-like outputs. More conversational responses. More comprehensive explanations. More context and nuance. We celebrate AI that sounds like us. But every step toward humanity is a step toward higher token consumption, longer context windows, greater compute costs.</p>
+<p>The irony is stark: we built AI to sound human, then discovered that sounding less human is dramatically more efficient.</p>
+<p>This isn&rsquo;t a bug—it&rsquo;s a fundamental characteristic. Human communication is redundant by design. We repeat ourselves for emphasis, add context for clarity, layer emotion into tone. All of that is valuable when you&rsquo;re talking to another human. When you&rsquo;re interfacing with a machine that needs precise instructions, all that redundancy is noise.</p>
+<h2 id="a-prediction-the-layered-ai-communication-era">A Prediction: The Layered AI Communication Era</h2>
+<p>I think we&rsquo;re heading toward a fundamental split in how AI systems communicate.</p>
+<p><strong>AI-to-AI communication</strong> will converge on compressed, efficient protocols. Think of it like machine code versus natural language—humans can read machine code, but it&rsquo;s wildly inefficient for us to write. Future AI systems will likely develop implicit protocols that maximize information density per token, trading readability for efficiency. We already see this in token-saving techniques like semantic compression and structured output formats.</p>
+<p><strong>AI-to-human communication</strong> will retain the natural language layer—the explanations, the context, the warmth. Humans need this. Not because the AI requires it, but because <strong>we</strong> require it. The value isn&rsquo;t in the information transfer; it&rsquo;s in the trust and comprehension it builds.</p>
+<p>In practice, this means AI systems will increasingly operate in two modes: a compressed internal mode for processing and computation, and an expanded external mode for human-facing output. The Caveman Mode phenomenon is an early signal of this bifurcation—the industry is discovering that one-size-fits-all communication is inefficient.</p>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li><strong>Caveman Mode reduces token consumption by 50-87%</strong> on structured coding tasks by removing explanatory overhead</li>
+<li><strong>It&rsquo;s not a universal solution</strong>—creative, analytical, and explanatory tasks suffer under aggressive compression</li>
+<li><strong>The efficiency comes with a cost</strong>: each step toward human-like AI output increases token consumption and compute cost</li>
+<li><strong>The future is likely layered</strong>: AI-to-AI communication will use compressed protocols humans can&rsquo;t easily read, while AI-to-human communication retains natural language</li>
+<li><strong>The fundamental insight</strong>: AI is not inherently more valuable when it sounds more human. Sometimes, the machine-like version is exactly what you need</li>
+</ul>
+<h2 id="the-real-lesson">The Real Lesson</h2>
+<p>Caveman Mode isn&rsquo;t really about compressing prompts. It&rsquo;s about <strong>matching communication style to the actual requirements of the task</strong>.</p>
+<p>When you need efficient computation, strip the human veneer. When you need explainability and trust, keep it. The mistake isn&rsquo;t using either mode—the mistake is applying them blindly.</p>
+<p>We&rsquo;re in an early phase of understanding human-AI interaction efficiency. Caveman Mode is a crude first attempt at a nuanced problem. But the pattern it reveals—that human-like AI has a real cost—will shape how we build AI systems for the next decade.</p>
+<p>Questions for you: Where have you found AI outputs to be wastefully verbose? And does the idea of AI-to-AI compressed communication feel natural to you, or does it feel like a step backward? I&rsquo;d genuinely like to hear your perspective—drop it in the comments.</p>
+<hr>
+<p><em>If you found this useful, consider subscribing. I write about AI engineering, cost optimization, and the practical realities of building with large language models.</em></p>
+]]></content:encoded></item><item><title>Why ClaudeCode / OpenCode + DeepSeek Cannot Unlock DeepSeek's Ultra-Low Cache Discounts</title><link>https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/</link><pubDate>Wed, 27 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/</guid><description>A critical architecture mismatch between segmented cache_control agents and strict full-prefix automatic caching — and why mixing these stacks wastes your biggest cost-saving feature.</description><content:encoded><![CDATA[<h2 id="introduction">Introduction</h2>
 <p>DeepSeek&rsquo;s disk-based automatic context caching is famous for <strong>near 90% input token savings</strong>: cached prefix tokens cost just a tiny fraction of standard input pricing, with zero manual configuration required. Thousands of developers switch to DeepSeek chasing this aggressive discount for long system prompts, code rules, and repeated tool definitions.</p>
 <p>But a costly reality hits teams running <strong>ClaudeCode / OpenCode (code agent runtimes built for Anthropic-style <code>cache_control</code>)</strong> against the DeepSeek API:</p>
 <blockquote>
