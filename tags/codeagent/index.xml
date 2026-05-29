@@ -1,4 +1,286 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>CodeAgent on MailMiner Agent Blog</title><link>https://mailmineragent.com/tags/codeagent/</link><description>Recent content in CodeAgent on MailMiner Agent Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 27 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://mailmineragent.com/tags/codeagent/index.xml" rel="self" type="application/rss+xml"/><item><title>Caveman Mode: When Less Output Means More Efficiency</title><link>https://mailmineragent.com/posts/caveman-mode-efficiency-revolution/</link><pubDate>Wed, 27 May 2026 08:00:00 +0800</pubDate><guid>https://mailmineragent.com/posts/caveman-mode-efficiency-revolution/</guid><description>How a simple prompt strategy called Caveman Mode reduced AI token consumption by 65% in production React development—and what it reveals about the true cost of human-like AI responses.</description><content:encoded><![CDATA[<h2 id="the-problem-nobody-talks-about">The Problem Nobody Talks About</h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>CodeAgent on MailMiner Agent Blog</title><link>https://mailmineragent.com/tags/codeagent/</link><description>Recent content in CodeAgent on MailMiner Agent Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 29 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://mailmineragent.com/tags/codeagent/index.xml" rel="self" type="application/rss+xml"/><item><title>DeepSeek-Reasonix: What a Cache-First Architecture Actually Looks Like</title><link>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</link><pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</guid><description>DeepSeek&amp;#39;s prefix cache can hit 94-99% — if your agent is designed for it. Here is the architecture and the real data.</description><content:encoded><![CDATA[<h2 id="recap-the-cache-mismatch-problem">Recap: The Cache Mismatch Problem</h2>
+<p>In our <a href="https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/">previous post</a>, we explained why pairing OpenCode / ClaudeCode with DeepSeek destroys your cache hit rate:</p>
+<ul>
+<li>DeepSeek uses <strong>strict full-prefix matching</strong> — a cache hit only fires when every byte from position <code>0</code> is identical to the previous request.</li>
+<li>Agent loops insert <code>tool</code> messages in the middle of the message array, breaking the prefix hash every turn.</li>
+<li>Anthropic-style <code>cache_control</code> segment markers are silently ignored.</li>
+<li>Result: <strong>near-zero cache hit rate</strong>, even though DeepSeek&rsquo;s billing dashboard shows caching is &ldquo;enabled.&rdquo;</li>
+</ul>
+<p>The problem is not DeepSeek. The problem is that <em>generic agent frameworks were designed for a fundamentally different caching mechanic</em>.</p>
+<hr>
+<h2 id="what-deepseek-reasonix-does-differently">What DeepSeek-Reasonix Does Differently</h2>
+<p><a href="https://github.com/esengine/DeepSeek-Reasonix">DeepSeek-Reasonix</a> is a DeepSeek-native coding agent built from the ground up around one invariant: <strong>the byte prefix must never change between turns.</strong></p>
+<blockquote>
+<p>Cache stability is not a feature you turn on; it is an invariant the loop is designed around.</p>
+</blockquote>
+<h3 id="pillar-1-cache-first-loop">Pillar 1: Cache-First Loop</h3>
+<p>The context is partitioned into three regions, each with strict mutation rules:</p>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────┐
+│ IMMUTABLE PREFIX                             │ ← frozen for the session
+│ system prompt + tool specs + few-shots       │   same bytes every turn
+├─────────────────────────────────────────────┤
+│ APPEND-ONLY LOG                              │ ← grows monotonically
+│ [assistant₁][tool₁][assistant₂][tool₂]...    │   never reorders, never edits-in-place
+├─────────────────────────────────────────────┤
+│ VOLATILE SCRATCH                             │ ← reset each turn
+│ R1 reasoning, plan state, ephemeral COT      │   never sent to the API
+└─────────────────────────────────────────────┘
+</code></pre><p>Four concrete mechanisms enforce this:</p>
+<ol>
+<li>
+<p><strong><code>ImmutablePrefix</code></strong> — system prompt and tool specifications are serialized once at session start. Same byte sequence every model call. No date strings, no directory paths, no runtime variables injected into the cached region.</p>
+</li>
+<li>
+<p><strong><code>AppendOnlyLog</code></strong> — new turns are only ever appended to the end. No message re-ordering, no compaction that rewrites earlier positions. The prefix hash from turn <code>N</code> is a valid prefix for turn <code>N+1</code>.</p>
+</li>
+<li>
+<p><strong><code>VolatileScratch</code></strong> — chain-of-thought, intermediate plans, and per-turn scratch buffers live in a separate region that is never included in the API request. This prevents R1&rsquo;s lengthy <code>reasoning_content</code> from polluting the byte prefix of the next turn.</p>
+</li>
+<li>
+<p><strong>Auto-compaction</strong> — when context approaches the token limit, older turns are folded into a summary message <em>appended</em> to the log. The prefix itself is never rewritten, so the cache survives the compaction.</p>
+</li>
+</ol>
+<h3 id="pillar-2-tool-call-repair">Pillar 2: Tool-Call Repair</h3>
+<p>DeepSeek models have quirks in tool calling — truncated JSON, calls leaked into <code>reasoning_content</code>, repeated identical calls. Reasonix applies four repair passes:</p>
+<ul>
+<li><strong>flatten</strong> — schemas with deep nesting (&gt;2 levels) or wide surface area (&gt;10 params) are auto-detected and presented in dot-notation form; <code>dispatch()</code> re-nests before calling your function.</li>
+<li><strong>scavenge</strong> — regex sweeps <code>reasoning_content</code> for tool calls the model forgot to emit in the structured <code>tool_calls</code> field.</li>
+<li><strong>truncation</strong> — detects unbalanced JSON and either closes braces or requests a continuation completion.</li>
+<li><strong>storm</strong> — identical <code>(tool, args)</code> tuples within a sliding window are suppressed; a reflection turn is injected instead.</li>
+</ul>
+<h3 id="pillar-3-cost-control">Pillar 3: Cost Control</h3>
+<ul>
+<li><strong>Adaptive model selection</strong>: <code>auto</code> preset starts on <code>v4-flash</code>, escalates to <code>v4-pro</code> mid-turn if the model shows signs of struggle (edit failures, repeated repair triggers). Threshold: 3 failure signals per turn.</li>
+<li><strong>Auxiliary calls use flash</strong>: summarization, subagent spawns, and truncation repair all hard-code <code>v4-flash</code> regardless of the user&rsquo;s preset.</li>
+<li><strong>Turn-end compaction</strong>: tool results exceeding 3000 tokens are shrunk to a summary at turn boundaries. Full text is available via <code>read_file</code> if needed.</li>
+<li><strong>Per-turn cost badges</strong>: the TUI shows a green/yellow/red badge for every turn, so you always know what you are paying.</li>
+</ul>
+<hr>
+<h2 id="the-data-synthetic-benchmark-τ-bench-lite">The Data: Synthetic Benchmark (τ-bench-lite)</h2>
+<p>Reasonix publishes a controlled τ-bench-lite benchmark: <strong>8 multi-turn tool-use tasks × 3 repeats = 48 runs per side</strong>. Same tools, same prompts, same DeepSeek API client — the sole variable is prefix stability.</p>
+<table>
+	<thead>
+			<tr>
+					<th>Metric</th>
+					<th style="text-align: right">Baseline (cache-hostile)</th>
+					<th style="text-align: right">Reasonix (CacheFirstLoop)</th>
+					<th style="text-align: right">Delta</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Runs</td>
+					<td style="text-align: right">24</td>
+					<td style="text-align: right">24</td>
+					<td style="text-align: right">—</td>
+			</tr>
+			<tr>
+					<td><strong>Cache hit rate</strong></td>
+					<td style="text-align: right">46.6%</td>
+					<td style="text-align: right"><strong>94.4%</strong></td>
+					<td style="text-align: right"><strong>+47.7 pp</strong></td>
+			</tr>
+			<tr>
+					<td>Cost / task</td>
+					<td style="text-align: right">$0.002599</td>
+					<td style="text-align: right">$0.001579</td>
+					<td style="text-align: right"><strong>−39% (×0.61)</strong></td>
+			</tr>
+			<tr>
+					<td>vs Claude Sonnet 4.6 (token-count est.)</td>
+					<td style="text-align: right">—</td>
+					<td style="text-align: right">—</td>
+					<td style="text-align: right"><strong>~96% cheaper</strong></td>
+			</tr>
+			<tr>
+					<td>Pass rate</td>
+					<td style="text-align: right">96% (23/24)</td>
+					<td style="text-align: right"><strong>100% (24/24)</strong></td>
+					<td style="text-align: right">Reasonix held every guardrail</td>
+			</tr>
+	</tbody>
+</table>
+<p>A 39% cost reduction purely from byte-stable prefix engineering — same model, same API key, same task set.</p>
+<p>The transcripts are committed to the repository with per-turn <code>usage</code>, <code>cost</code>, and <code>prefixHash</code> fields for independent verification. Reasonix&rsquo;s <code>prefixHash</code> stays constant across all model calls in a session; baseline&rsquo;s hash changes on every turn.</p>
+<hr>
+<h2 id="the-data-real-world-user-single-day">The Data: Real-World User, Single Day</h2>
+<p>On <strong>2026-05-01</strong>, a real Reasonix user shared their DeepSeek dashboard (used with permission, anonymized):</p>
+<table>
+	<thead>
+			<tr>
+					<th></th>
+					<th style="text-align: right">Tokens</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Input — cache hit</td>
+					<td style="text-align: right">435,033,856</td>
+			</tr>
+			<tr>
+					<td>Input — cache miss</td>
+					<td style="text-align: right">767,616</td>
+			</tr>
+			<tr>
+					<td>Output</td>
+					<td style="text-align: right">179,763</td>
+			</tr>
+			<tr>
+					<td><strong>Day total</strong></td>
+					<td style="text-align: right"><strong>435,981,235</strong></td>
+			</tr>
+	</tbody>
+</table>
+<p><strong>Cache hit ratio: 99.82%</strong></p>
+<p>At DeepSeek v4-flash pricing ($0.028/Mtok cached, $0.139/Mtok uncached):</p>
+<table>
+	<thead>
+			<tr>
+					<th></th>
+					<th style="text-align: right">This user (99.82% hit)</th>
+					<th style="text-align: right">Same workload, 0% cache</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Cache-hit input</td>
+					<td style="text-align: right">$12.18</td>
+					<td style="text-align: right">—</td>
+			</tr>
+			<tr>
+					<td>Cache-miss input</td>
+					<td style="text-align: right">$0.11</td>
+					<td style="text-align: right">$60.58</td>
+			</tr>
+			<tr>
+					<td>Output</td>
+					<td style="text-align: right">$0.05</td>
+					<td style="text-align: right">$0.05</td>
+			</tr>
+			<tr>
+					<td><strong>Total / day</strong></td>
+					<td style="text-align: right"><strong>$12.34</strong></td>
+					<td style="text-align: right"><strong>$60.63</strong></td>
+			</tr>
+	</tbody>
+</table>
+<p>→ <strong>~80% savings</strong> on a single day of heavy use. On v4-pro the saving grows to ~91%.</p>
+<hr>
+<h2 id="comparison-cache-hit-rates-across-clients">Comparison: Cache Hit Rates Across Clients</h2>
+<p>DeepSeek&rsquo;s prefix cache is always on at the API level. The difference is entirely client-side:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Client</th>
+					<th>Typical cache hit rate</th>
+					<th>Why</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>DeepSeek web chat</td>
+					<td>60–80%</td>
+					<td>Single conversation, no tool calls — but drops to 0% on new session</td>
+			</tr>
+			<tr>
+					<td>Cherry Studio / Open WebUI</td>
+					<td>30–60%</td>
+					<td>History reordering, reserialized tool specs</td>
+			</tr>
+			<tr>
+					<td>Cline / Continue</td>
+					<td>&lt;30%</td>
+					<td>XML tool calls inline in conversation, bytes shift every turn</td>
+			</tr>
+			<tr>
+					<td>OpenCode + DeepSeek</td>
+					<td>near 0%</td>
+					<td><code>cache_control</code> markers ignored + middle-message insertion</td>
+			</tr>
+			<tr>
+					<td><strong>Reasonix</strong></td>
+					<td><strong>94–99.8%</strong></td>
+					<td>Immutable prefix + append-only log + volatile scratch + auto-compact</td>
+			</tr>
+	</tbody>
+</table>
+<blockquote>
+<p>&ldquo;DeepSeek gave us cacheable bytes. The four mechanisms above are how we keep the bytes cacheable.&rdquo;
+— Reasonix architecture docs</p>
+</blockquote>
+<hr>
+<h2 id="key-architectural-insight">Key Architectural Insight</h2>
+<p>The difference between Reasonix and a generic agent framework is not incremental — it is a fundamentally different loop design:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Dimension</th>
+					<th>Generic framework (OpenCode, LangChain, etc.)</th>
+					<th>Reasonix</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Cache model</td>
+					<td>Anthropic <code>cache_control</code> segments (or none)</td>
+					<td>DeepSeek full-prefix</td>
+			</tr>
+			<tr>
+					<td>System prompt</td>
+					<td>Rebuilt each turn, may contain dates/paths</td>
+					<td>Frozen at session start (<code>ImmutablePrefix</code>)</td>
+			</tr>
+			<tr>
+					<td>Message history</td>
+					<td>Reordered, compacted, edited in-place</td>
+					<td>Append-only, never mutated</td>
+			</tr>
+			<tr>
+					<td>Tool results</td>
+					<td>Inlined into conversation</td>
+					<td>Appended after tool call; auto-compacted to summary</td>
+			</tr>
+			<tr>
+					<td>COT / scratch</td>
+					<td>Included in API request (poisons prefix)</td>
+					<td>Volatile scratch, never sent upstream</td>
+			</tr>
+			<tr>
+					<td>Failover model</td>
+					<td>N/A</td>
+					<td>Auto-escalation from flash → pro on struggle</td>
+			</tr>
+	</tbody>
+</table>
+<p>This is not about being &ldquo;better engineered&rdquo; in the abstract. It is about <strong>matching the loop structure to the cache mechanic</strong>. Generic frameworks were designed for OpenAI / Anthropic&rsquo;s cache model; Reasonix was designed for DeepSeek&rsquo;s. Neither is wrong — but mixing them wastes your largest cost lever.</p>
+<hr>
+<h2 id="summary">Summary</h2>
+<p>DeepSeek&rsquo;s prefix cache is real and delivers massive savings — <strong>94–99.8% cache hit rates, 39–80% cost reduction</strong> — but only when your agent loop preserves byte-level prefix stability.</p>
+<p>DeepSeek-Reasonix achieves this through three pillars:</p>
+<ol>
+<li><strong>Cache-First Loop</strong> — immutable prefix, append-only log, volatile scratch, auto-compaction</li>
+<li><strong>Tool-Call Repair</strong> — flatten, scavenge, truncation fix, storm suppression</li>
+<li><strong>Cost Control</strong> — adaptive model selection, auxiliary route to flash, turn-end compaction</li>
+</ol>
+<p>The numbers are published and independently verifiable: the benchmark harness, JSONL transcripts, and replay tool are all MIT-licensed at <a href="https://github.com/esengine/DeepSeek-Reasonix">github.com/esengine/DeepSeek-Reasonix</a>.</p>
+<p>If you are running DeepSeek through a generic agent framework and wondering why your cache hit rate hovers near zero, this is why. The cache was never the problem; the loop was.</p>
+<hr>
+<h2 id="faq">FAQ</h2>
+<h3 id="q-can-i-use-reasonix-with-non-deepseek-models">Q: Can I use Reasonix with non-DeepSeek models?</h3>
+<p>No — and that is by design. Reasonix is DeepSeek-only because every layer is tuned to DeepSeek&rsquo;s specific properties: byte-stable prefix caching, cheap token pricing, R1 reasoning traces, and JSON mode. Pointing it at OpenAI would lose the cache economics that justify the architecture.</p>
+<h3 id="q-how-does-reasonix-compare-to-claude-code-in-practice">Q: How does Reasonix compare to Claude Code in practice?</h3>
+<p>Claude Code costs roughly <strong>10–50× more per task</strong> depending on model tier and caching behavior. Reasonix&rsquo;s τ-bench benchmark shows ~96% cheaper vs Claude Sonnet 4.6 on a token-count basis. The trade-off is that Claude Code supports Anthropic&rsquo;s native <code>cache_control</code> and works with a broader ecosystem; Reasonix optimizes ruthlessly for the DeepSeek stack.</p>
+<h3 id="q-is-94998-cache-hit-rate-sustainable-over-weeks">Q: Is 94–99.8% cache hit rate sustainable over weeks?</h3>
+<p>The mechanisms are designed for long-running sessions: <code>ImmutablePrefix</code> never changes within a session, <code>AppendOnlyLog</code> never rewrites history, and auto-compaction folds older context without touching the prefix. The real-world 99.82% case covers a full day of active use. Sessions persist per workspace and survive restarts via disk persistence.</p>
+<h3 id="q-what-happens-when-the-context-window-fills-up">Q: What happens when the context window fills up?</h3>
+<p>Reasonix auto-compacts: older turns are folded into a summary message that is <em>appended</em> to the log. The immutable prefix is never rewritten, so the cache survives. After compaction, the prefix remains byte-stable — only the appended summary changes.</p>
+<h3 id="q-can-i-get-reasonixs-caching-benefits-in-my-own-agent-framework">Q: Can I get Reasonix&rsquo;s caching benefits in my own agent framework?</h3>
+<p>The core primitives are MIT-licensed and importable: <code>CacheFirstLoop</code>, <code>ImmutablePrefix</code>, <code>AppendOnlyLog</code>, and <code>ToolRegistry</code> are all available as library components via <code>npm install reasonix</code>. You can build your own agent on top of the same loop without adopting the full Reasonix CLI.</p>
+<h3 id="q-does-the-auto-escalation-to-v4-pro-cause-unexpected-costs">Q: Does the auto-escalation to v4-pro cause unexpected costs?</h3>
+<p>The threshold is conservative (3 failure signals per turn) and signaled via a yellow warning badge in the TUI before escalation happens. The escalation applies only to the <em>remainder of the current turn</em> and resets at every turn start. In practice, most sessions stay entirely on v4-flash.</p>
+<h3 id="q-what-if-i-do-not-want-to-use-the-tui">Q: What if I do not want to use the TUI?</h3>
+<p>Reasonix supports non-interactive modes: <code>npx reasonix run &quot;ask anything&quot;</code> for one-shot queries, <code>reasonix code --no-session</code> for ephemeral sessions, and <code>reasonix stats / replay / diff</code> for offline transcript analysis. The TUI is optional.</p>
+]]></content:encoded></item><item><title>Caveman Mode: When Less Output Means More Efficiency</title><link>https://mailmineragent.com/posts/caveman-mode-efficiency-revolution/</link><pubDate>Wed, 27 May 2026 08:00:00 +0800</pubDate><guid>https://mailmineragent.com/posts/caveman-mode-efficiency-revolution/</guid><description>How a simple prompt strategy called Caveman Mode reduced AI token consumption by 65% in production React development—and what it reveals about the true cost of human-like AI responses.</description><content:encoded><![CDATA[<h2 id="the-problem-nobody-talks-about">The Problem Nobody Talks About</h2>
 <p>Every engineering team I&rsquo;ve talked to in the past six months shares the same frustration: AI coding assistants are great, until you look at the bill.</p>
 <p>Let me give you a concrete example. We ran a React development task through a standard AI assistant setup. The task: implement a feature with proper error handling. The result? <strong>20 minutes</strong> and <strong>50,300 tokens</strong> consumed. For a single feature. In production, this compounds fast—multiplied across a team of ten engineers running dozens of sessions daily, you&rsquo;re looking at serious API costs bleeding into your compute budget.</p>
 <p>Then we discovered Caveman Mode.</p>
