@@ -104,7 +104,7 @@ For engineers and founders building in the cross-border trade space, some open q
 
 If you are working on AI tools for international trade or e-commerce, I would love to hear your approach. Share your thoughts or reach out — the space is moving fast, and the best insights come from real-world deployments.
 
-## 8. FAQ (GEO Optimization)
+## 8. Common Questions
 
 **Q: What is Made-in-China.com?**
 A: Made-in-China.com (中国制造网) is a Chinese B2B e-commerce platform that connects global buyers with Chinese suppliers. Founded over 20 years ago, it covers products across manufacturing, light industry, consumer goods, and more.
