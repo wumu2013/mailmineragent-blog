@@ -1,4 +1,80 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>LLM on MailMiner Agent Blog</title><link>https://mailmineragent.com/tags/llm/</link><description>Recent content in LLM on MailMiner Agent Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 29 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://mailmineragent.com/tags/llm/index.xml" rel="self" type="application/rss+xml"/><item><title>DeepSeek-Reasonix: What a Cache-First Architecture Actually Looks Like</title><link>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</link><pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</guid><description>DeepSeek&amp;#39;s prefix cache can hit 94-99% — if your agent is designed for it. Here is the architecture and the real data.</description><content:encoded><![CDATA[<h2 id="recap-the-cache-mismatch-problem">Recap: The Cache Mismatch Problem</h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>LLM on MailMiner Agent Blog</title><link>https://mailmineragent.com/tags/llm/</link><description>Recent content in LLM on MailMiner Agent Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 30 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://mailmineragent.com/tags/llm/index.xml" rel="self" type="application/rss+xml"/><item><title>How AI Is Transforming Cross-Border Trade: A Barcelona Pet Store Lesson</title><link>https://mailmineragent.com/posts/how-ai-is-transforming-cross-border-trade/</link><pubDate>Sat, 30 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/how-ai-is-transforming-cross-border-trade/</guid><description>A Chinese foreign trade practitioner walks into a pet store in Barcelona and discovers how Spanish buyers find Chinese suppliers through AI-powered B2B platforms, TikTok, and WeChat — a firsthand look at the intersection of AI and international trade.</description><content:encoded><![CDATA[<h2 id="1-the-hook">1. The Hook</h2>
+<p>On a street in Barcelona, a Chinese foreign trade professional walked into a pet supplies store. What started as a casual cold visit turned into an eye-opening conversation about how Spanish buyers find Chinese suppliers in 2026.</p>
+<p>The pet store owner didn&rsquo;t need an introduction to Chinese manufacturing. He already knew the platforms, the tools, and the shortcuts. &ldquo;You Chinese are too smart,&rdquo; he said. &ldquo;The ways we can find Chinese suppliers now are just too many.&rdquo;</p>
+<p>This is not a story about cold calling or trade shows. It is a story about how AI, social media, and digital platforms have rewritten the rulebook for cross-border B2B trade.</p>
+<h2 id="2-background--context">2. Background / Context</h2>
+<h3 id="the-old-way">The Old Way</h3>
+<p>Traditional cross-border trade relied on a handful of channels: trade fairs (Canton Fair), agent networks, industry directories, and word of mouth. A Spanish buyer wanting to source pet toys from China would either fly to Guangzhou or work through a trading company with opaque margins.</p>
+<h3 id="the-new-landscape">The New Landscape</h3>
+<p>In 2026, the landscape looks fundamentally different. Chinese suppliers have built a multi-channel presence that reaches foreign buyers where they already live:</p>
+<ul>
+<li><strong>WeChat / Video Accounts</strong> — China&rsquo;s ubiquitous messaging platform now serves as a business discovery tool</li>
+<li><strong>Douyin / TikTok</strong> — Short-form video has become a lead generation engine</li>
+<li><strong>Made-in-China.com (中国制造网)</strong> — A 20+ year-old B2B platform now supercharged with AI</li>
+</ul>
+<p>The pet store owner in Barcelona was using all of them.</p>
+<h2 id="3-the-discovery">3. The Discovery</h2>
+<p>What surprised the pet store owner most was not the number of channels, but the quality of the interaction.</p>
+<p>&ldquo;On Made-in-China.com,&rdquo; he explained, &ldquo;when I chat with suppliers, they reply in Spanish. Fluent, natural Spanish. 24-hour response.&rdquo;</p>
+<p>This was not a team of multilingual sales reps working around the clock. It was an AI tool called &ldquo;AI Mai Kou&rdquo; (AI卖口) — an intelligent sales assistant built into the platform.</p>
+<p>The AI Mai Kou tool does three things:</p>
+<ol>
+<li><strong>Language detection</strong> — Identifies the buyer&rsquo;s country and language from their IP or profile</li>
+<li><strong>Real-time translation with context</strong> — Translates not just words but business intent, maintaining professional tone and industry terminology</li>
+<li><strong>24/7 proactive engagement</strong> — Responds instantly, never sleeps, never takes a holiday</li>
+</ol>
+<p>The Spanish pet store owner had no idea he was talking to an AI. To him, it felt like talking to a real, knowledgeable salesperson who happened to be available at any hour.</p>
+<h2 id="4-root-cause-analysis-why-this-matters">4. Root Cause Analysis: Why This Matters</h2>
+<h3 id="the-language-barrier-has-collapsed">The Language Barrier Has Collapsed</h3>
+<p>For decades, the single biggest friction point in cross-border trade was language. A Spanish buyer sourcing from China needed either:</p>
+<ul>
+<li>An English-speaking supplier (rare in smaller Chinese factories)</li>
+<li>A bilingual trading middleman (added cost and complexity)</li>
+<li>Machine translation (poor quality, lost nuance)</li>
+</ul>
+<p>AI Mai Kou solves this at the platform level. The supplier writes in Chinese. The buyer reads in Spanish. The AI handles the bridge with <em>domain-specific accuracy</em> — knowing the difference between &ldquo;pet toy&rdquo; and &ldquo;pet smart toy&rdquo; in both languages.</p>
+<h3 id="the-time-zone-problem-evaporates">The Time Zone Problem Evaporates</h3>
+<p>Barcelona is 6 hours behind Beijing. A Spanish buyer browsing at 10 PM local time would normally wait until the next business day for a reply. By then, the buying impulse may have faded.</p>
+<p>AI Mai Kou responds immediately. The buyer stays engaged. The lead is captured.</p>
+<h3 id="discovery-becomes-serendipitous">Discovery Becomes Serendipitous</h3>
+<p>The platform&rsquo;s AI assistant doesn&rsquo;t just answer questions — it <strong>proactively recommends products</strong> based on the buyer&rsquo;s conversation history and stated needs. When the pet store owner mentioned he was looking for pet supplies, the AI surfaced relevant categories: pet smart toys, cat beds, dog beds, and more.</p>
+<p>This turns a passive catalog browse into an active, guided shopping experience — without human intervention.</p>
+<h2 id="5-the-broader-picture-tiktok-and-the-content-engine">5. The Broader Picture: TikTok and the Content Engine</h2>
+<p>Beyond the B2B platform, the pet store owner also noticed another trend: Chinese young people posting short videos on TikTok to promote products.</p>
+<p>&ldquo;Your young people are unstoppable,&rdquo; he said. &ldquo;They are all on TikTok making videos about Chinese products.&rdquo;</p>
+<p>This reveals a second layer of the new cross-border trade stack: <strong>content as a lead generation channel</strong>. The foreign trade practitioner in the video uses precisely this strategy — filming cold visits, sharing market insights, and building a personal brand that attracts potential buyers.</p>
+<p>The flywheel works like this:</p>
+<pre tabindex="0"><code>Go to market → Discover buyer needs → Film content → Publish on TikTok → Attract more buyers → Repeat
+</code></pre><h2 id="6-key-takeaways">6. Key Takeaways</h2>
+<ul>
+<li><strong>AI-first B2B platforms are leveling the playing field</strong> for small and medium Chinese suppliers who cannot afford multilingual sales teams</li>
+<li><strong>Language is no longer a moat</strong> — real-time AI translation with domain context makes cross-border communication seamless</li>
+<li><strong>24/7 AI engagement captures buying impulses</strong> that would otherwise be lost to time zone differences</li>
+<li><strong>Short-form video content is becoming a primary B2B channel</strong> — TikTok/抖音 is not just for consumer entertainment</li>
+<li><strong>Getting on the ground matters more than ever</strong> — the best content insights come from real conversations with real buyers</li>
+<li><strong>The synergy is powerful</strong>: AI handles scale and speed; human content creators provide authenticity and trust</li>
+</ul>
+<h2 id="7-discussion--call-to-action">7. Discussion / Call to Action</h2>
+<p>The Barcelona conversation is a microcosm of a larger shift. AI is not replacing human relationships in cross-border trade — it is augmenting them. The AI handles the initial discovery, the language barrier, and the 24/7 availability. The human handles the trust-building, the relationship, and the on-the-ground market intelligence.</p>
+<p>For engineers and founders building in the cross-border trade space, some open questions remain:</p>
+<ul>
+<li>How do we measure AI-assisted conversation quality in B2B contexts?</li>
+<li>Should platforms disclose AI usage to buyers, or does the &ldquo;human touch&rdquo; illusion serve conversion better?</li>
+<li>Will AI-driven supplier matching reduce or increase the role of traditional trading companies?</li>
+</ul>
+<p>If you are working on AI tools for international trade or e-commerce, I would love to hear your approach. Share your thoughts or reach out — the space is moving fast, and the best insights come from real-world deployments.</p>
+<h2 id="8-common-questions">8. Common Questions</h2>
+<p><strong>Q: What is Made-in-China.com?</strong>
+A: Made-in-China.com (中国制造网) is a Chinese B2B e-commerce platform that connects global buyers with Chinese suppliers. Founded over 20 years ago, it covers products across manufacturing, light industry, consumer goods, and more.</p>
+<p><strong>Q: How does AI help in cross-border trade?</strong>
+A: AI helps cross-border trade by breaking down language barriers with real-time domain-specific translation, enabling 24/7 proactive customer engagement, and intelligently matching buyer needs with supplier products based on conversation context.</p>
+<p><strong>Q: What is the AI Mai Kou tool on Made-in-China.com?</strong>
+A: AI Mai Kou (AI卖口) is an AI-powered sales assistant integrated into Made-in-China.com. It automatically detects a buyer&rsquo;s language and country, responds in their native language with industry-appropriate terminology, and proactively recommends products based on buyer needs.</p>
+<p><strong>Q: How can TikTok be used for B2B cross-border trade?</strong>
+A: TikTok can be used for B2B cross-border trade by creating short-form video content that showcases products, shares market insights, and builds personal brand authority. Chinese suppliers and trade professionals use TikTok to reach international buyers who search for product information and supplier credibility through video content.</p>
+<p><strong>Q: What is the &ldquo;Ten Light Industry Empowerment Plan&rdquo;?</strong>
+A: The Ten Light Industry Empowerment Plan (十大轻工复能计划) is an initiative on Made-in-China.com designed to help small and medium-sized light industrial enterprises expand globally through the platform&rsquo;s digital tools, AI capabilities, and cross-border logistics network.</p>
+]]></content:encoded></item><item><title>DeepSeek-Reasonix: What a Cache-First Architecture Actually Looks Like</title><link>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</link><pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</guid><description>DeepSeek&amp;#39;s prefix cache can hit 94-99% — if your agent is designed for it. Here is the architecture and the real data.</description><content:encoded><![CDATA[<h2 id="recap-the-cache-mismatch-problem">Recap: The Cache Mismatch Problem</h2>
 <p>In our <a href="https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/">previous post</a>, we explained why pairing OpenCode / ClaudeCode with DeepSeek destroys your cache hit rate:</p>
 <ul>
 <li>DeepSeek uses <strong>strict full-prefix matching</strong> — a cache hit only fires when every byte from position <code>0</code> is identical to the previous request.</li>
