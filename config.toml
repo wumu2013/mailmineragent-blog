@@ -46,7 +46,7 @@ enableRobotsTXT = true
 
   [params.homeInfoParams]
     Title = "Welcome to MailMiner Agent Blog"
-    Content = "AI systems engineering & cross-border entrepreneurship case studies.\nTechnical deep dives and real-world business playbooks."
+    Content = "AI systems engineering & real-world cross-border entrepreneurship case studies.\nTechnical deep dives and actionable business playbooks."
 
   [[params.socialIcons]]
     name = "github"
