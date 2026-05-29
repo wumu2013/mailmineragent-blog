@@ -6,117 +6,62 @@ tags: ["LLM", "AIinBusiness", "CrossBorderTrade"]
 description: "A Chinese foreign trade practitioner walks into a pet store in Barcelona and discovers how Spanish buyers find Chinese suppliers through AI-powered B2B platforms, TikTok, and WeChat — a firsthand look at the intersection of AI and international trade."
 ---
 
-## 1. The Hook
+The Barcelona sun was warm on the street when he pushed open the door of a small pet supplies shop. It was a cold visit — no appointment, no introduction. Just a Chinese外贸人 walking into a random store on a random street, hoping for a conversation.
 
-On a street in Barcelona, a Chinese foreign trade professional walked into a pet supplies store. What started as a casual cold visit turned into an eye-opening conversation about how Spanish buyers find Chinese suppliers in 2026.
+Inside, the shelves were packed with cat beds, dog leashes, pet toys. The owner, a middle-aged Spaniard, looked up from his computer. What happened next was not what the visitor expected.
 
-The pet store owner didn't need an introduction to Chinese manufacturing. He already knew the platforms, the tools, and the shortcuts. "You Chinese are too smart," he said. "The ways we can find Chinese suppliers now are just too many."
+"You Chinese are too smart," the owner said, almost before the greeting was finished.
 
-This is not a story about cold calling or trade shows. It is a story about how AI, social media, and digital platforms have rewritten the rulebook for cross-border B2B trade.
+The visitor laughed. "What do you mean?"
 
-## 2. Background / Context
+The owner spun his monitor around. On the screen was Made-in-China.com, the Chinese B2B platform. "The ways we can find Chinese suppliers now are just too many," he said, shaking his head in genuine admiration. "It's incredible."
 
-### The Old Way
+He started counting on his fingers. WeChat. Video accounts. TikTok. And then this platform, where something strange was happening.
 
-Traditional cross-border trade relied on a handful of channels: trade fairs (Canton Fair), agent networks, industry directories, and word of mouth. A Spanish buyer wanting to source pet toys from China would either fly to Guangzhou or work through a trading company with opaque margins.
+"When I chat with suppliers here," the owner said, "they reply in Spanish. Perfect Spanish. Twenty-four hours a day."
 
-### The New Landscape
+The visitor knew the secret. It wasn't a team of multilingual sales reps. It was an AI tool called AI Mai Kou — an intelligent sales assistant embedded in the platform. It detects the buyer's country, translates the supplier's Chinese into fluent Spanish, and responds instantly, any time of day or night.
 
-In 2026, the landscape looks fundamentally different. Chinese suppliers have built a multi-channel presence that reaches foreign buyers where they already live:
+"You know," the owner continued, scrolling through his messages, "I was looking for pet smart toys the other day. Before I even finished typing, the assistant showed me products. Cat beds, dog beds,智能 toys. It knew what I wanted before I fully explained it."
 
-- **WeChat / Video Accounts** — China's ubiquitous messaging platform now serves as a business discovery tool
-- **Douyin / TikTok** — Short-form video has become a lead generation engine
-- **Made-in-China.com (中国制造网)** — A 20+ year-old B2B platform now supercharged with AI
+He paused and looked up. "And the Spanish is so smooth. Like talking to a local."
 
-The pet store owner in Barcelona was using all of them.
+The visitor smiled. "Not every supplier speaks Spanish. The AI does it for them."
 
-## 3. The Discovery
+The owner leaned back in his chair. "You Chinese are too smart," he said again, this time with a different tone — respect.
 
-What surprised the pet store owner most was not the number of channels, but the quality of the interaction.
+Then he mentioned TikTok. "Your young people are unstoppable. They are all on TikTok, making videos, showing products. I found three new suppliers last week just scrolling through my feed."
 
-"On Made-in-China.com," he explained, "when I chat with suppliers, they reply in Spanish. Fluent, natural Spanish. 24-hour response."
+The conversation drifted to China-Spain relations. Direct flights from Chengdu to Madrid. The Spanish president's recent visit to China. The visitor mentioned an initiative on Made-in-China.com called the "Ten Light Industry Empowerment Plan" — designed to help small and medium factories go global faster with digital tools and AI.
 
-This was not a team of multilingual sales reps working around the clock. It was an AI tool called "AI Mai Kou" (AI卖口) — an intelligent sales assistant built into the platform.
+"A few years ago," the visitor said, "I was a student in Spain. Clueless. Now I come back and I see business everywhere. Same streets, but I see completely different things."
 
-The AI Mai Kou tool does three things:
+He had learned the most important lesson of cross-border trade: you have to get on the ground. Walk the streets. Talk to the people. Listen to what they need. Then turn those needs into content — videos, posts, stories — that bring more buyers to you.
 
-1. **Language detection** — Identifies the buyer's country and language from their IP or profile
-2. **Real-time translation with context** — Translates not just words but business intent, maintaining professional tone and industry terminology
-3. **24/7 proactive engagement** — Responds instantly, never sleeps, never takes a holiday
+"I haven't been in this外贸 game very long," he admitted. "But the feeling I have now — it gets better every day."
 
-The Spanish pet store owner had no idea he was talking to an AI. To him, it felt like talking to a real, knowledgeable salesperson who happened to be available at any hour.
+The pet store owner laughed. "Make sure I'm in your next video."
 
-## 4. Root Cause Analysis: Why This Matters
+They exchanged contacts. The visitor stepped back into the Barcelona sun, one more cold visit done, one more story to tell.
 
-### The Language Barrier Has Collapsed
+---
 
-For decades, the single biggest friction point in cross-border trade was language. A Spanish buyer sourcing from China needed either:
-- An English-speaking supplier (rare in smaller Chinese factories)
-- A bilingual trading middleman (added cost and complexity)
-- Machine translation (poor quality, lost nuance)
+*Q: What is Made-in-China.com?*
 
-AI Mai Kou solves this at the platform level. The supplier writes in Chinese. The buyer reads in Spanish. The AI handles the bridge with _domain-specific accuracy_ — knowing the difference between "pet toy" and "pet smart toy" in both languages.
+A: A Chinese B2B platform connecting global buyers with Chinese suppliers. It has been operating for over 20 years and covers manufacturing, light industry, and consumer goods.
 
-### The Time Zone Problem Evaporates
+*Q: How does AI help in cross-border trade?*
 
-Barcelona is 6 hours behind Beijing. A Spanish buyer browsing at 10 PM local time would normally wait until the next business day for a reply. By then, the buying impulse may have faded.
+A: AI breaks down language barriers with real-time domain-specific translation, enables 24/7 customer engagement, and intelligently matches buyer needs with supplier products based on conversation context.
 
-AI Mai Kou responds immediately. The buyer stays engaged. The lead is captured.
+*Q: What is the AI Mai Kou tool?*
 
-### Discovery Becomes Serendipitous
+A: AI Mai Kou (AI卖口) is an AI sales assistant on Made-in-China.com that detects a buyer's language, responds in their native tongue with industry terminology, and proactively recommends products.
 
-The platform's AI assistant doesn't just answer questions — it **proactively recommends products** based on the buyer's conversation history and stated needs. When the pet store owner mentioned he was looking for pet supplies, the AI surfaced relevant categories: pet smart toys, cat beds, dog beds, and more.
+*Q: Can TikTok really work for B2B?*
 
-This turns a passive catalog browse into an active, guided shopping experience — without human intervention.
+A: Yes. Chinese suppliers and trade professionals use TikTok to reach international buyers through short videos that showcase products, share market insights, and build personal brand authority.
 
-## 5. The Broader Picture: TikTok and the Content Engine
+*Q: What is the Ten Light Industry Empowerment Plan?*
 
-Beyond the B2B platform, the pet store owner also noticed another trend: Chinese young people posting short videos on TikTok to promote products.
-
-"Your young people are unstoppable," he said. "They are all on TikTok making videos about Chinese products."
-
-This reveals a second layer of the new cross-border trade stack: **content as a lead generation channel**. The foreign trade practitioner in the video uses precisely this strategy — filming cold visits, sharing market insights, and building a personal brand that attracts potential buyers.
-
-The flywheel works like this:
-
-```
-Go to market → Discover buyer needs → Film content → Publish on TikTok → Attract more buyers → Repeat
-```
-
-## 6. Key Takeaways
-
-- **AI-first B2B platforms are leveling the playing field** for small and medium Chinese suppliers who cannot afford multilingual sales teams
-- **Language is no longer a moat** — real-time AI translation with domain context makes cross-border communication seamless
-- **24/7 AI engagement captures buying impulses** that would otherwise be lost to time zone differences
-- **Short-form video content is becoming a primary B2B channel** — TikTok/抖音 is not just for consumer entertainment
-- **Getting on the ground matters more than ever** — the best content insights come from real conversations with real buyers
-- **The synergy is powerful**: AI handles scale and speed; human content creators provide authenticity and trust
-
-## 7. Discussion / Call to Action
-
-The Barcelona conversation is a microcosm of a larger shift. AI is not replacing human relationships in cross-border trade — it is augmenting them. The AI handles the initial discovery, the language barrier, and the 24/7 availability. The human handles the trust-building, the relationship, and the on-the-ground market intelligence.
-
-For engineers and founders building in the cross-border trade space, some open questions remain:
-
-- How do we measure AI-assisted conversation quality in B2B contexts?
-- Should platforms disclose AI usage to buyers, or does the "human touch" illusion serve conversion better?
-- Will AI-driven supplier matching reduce or increase the role of traditional trading companies?
-
-If you are working on AI tools for international trade or e-commerce, I would love to hear your approach. Share your thoughts or reach out — the space is moving fast, and the best insights come from real-world deployments.
-
-## 8. Common Questions
-
-**Q: What is Made-in-China.com?**
-A: Made-in-China.com (中国制造网) is a Chinese B2B e-commerce platform that connects global buyers with Chinese suppliers. Founded over 20 years ago, it covers products across manufacturing, light industry, consumer goods, and more.
-
-**Q: How does AI help in cross-border trade?**
-A: AI helps cross-border trade by breaking down language barriers with real-time domain-specific translation, enabling 24/7 proactive customer engagement, and intelligently matching buyer needs with supplier products based on conversation context.
-
-**Q: What is the AI Mai Kou tool on Made-in-China.com?**
-A: AI Mai Kou (AI卖口) is an AI-powered sales assistant integrated into Made-in-China.com. It automatically detects a buyer's language and country, responds in their native language with industry-appropriate terminology, and proactively recommends products based on buyer needs.
-
-**Q: How can TikTok be used for B2B cross-border trade?**
-A: TikTok can be used for B2B cross-border trade by creating short-form video content that showcases products, shares market insights, and builds personal brand authority. Chinese suppliers and trade professionals use TikTok to reach international buyers who search for product information and supplier credibility through video content.
-
-**Q: What is the "Ten Light Industry Empowerment Plan"?**
-A: The Ten Light Industry Empowerment Plan (十大轻工复能计划) is an initiative on Made-in-China.com designed to help small and medium-sized light industrial enterprises expand globally through the platform's digital tools, AI capabilities, and cross-border logistics network.
+A: An initiative on Made-in-China.com that helps small and medium light industrial enterprises expand globally using digital tools, AI capabilities, and cross-border logistics support.
