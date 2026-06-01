@@ -1,4 +1,93 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>DeepSeek on MailMiner Agent Blog</title><link>https://mailmineragent.com/tags/deepseek/</link><description>Recent content in DeepSeek on MailMiner Agent Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 29 May 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://mailmineragent.com/tags/deepseek/index.xml" rel="self" type="application/rss+xml"/><item><title>DeepSeek-Reasonix: What a Cache-First Architecture Actually Looks Like</title><link>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</link><pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</guid><description>DeepSeek&amp;#39;s prefix cache can hit 94-99% — if your agent is designed for it. Here is the architecture and the real data.</description><content:encoded><![CDATA[<h2 id="recap-the-cache-mismatch-problem">Recap: The Cache Mismatch Problem</h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>DeepSeek on MailMiner Agent Blog</title><link>https://mailmineragent.com/tags/deepseek/</link><description>Recent content in DeepSeek on MailMiner Agent Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://mailmineragent.com/tags/deepseek/index.xml" rel="self" type="application/rss+xml"/><item><title>How DeepClaude Hacked Claude Code onto DeepSeek (and Why It Actually Works)</title><link>https://mailmineragent.com/posts/deepclaude-claude-code-deepseek-proxy/</link><pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/deepclaude-claude-code-deepseek-proxy/</guid><description>A deep dive into the deepclaude project that routes Claude Code through DeepSeek V4 Pro/Flash via a local proxy, cutting costs by 14x while keeping the client untouched.</description><content:encoded><![CDATA[<p>A repository called <code>aattaran/deepclaude</code> hit Hacker News front page 13 hours after launch, accumulating 498 points and 608 stars. The pitch is simple: keep Claude Code&rsquo;s client exactly as-is, swap the backend from Anthropic to DeepSeek V4 Pro and V4 Flash, and claim a 17x cost reduction.</p>
+<p>But the real engineering meat isn&rsquo;t in the 4-line export statement. It&rsquo;s in <code>proxy/model-proxy.js</code> — a local service running on port 3200 that routes by path: <code>/v1/messages</code> gets rewritten to use a DeepSeek key and forward to <code>api.deepseek.com</code>, while everything else carries the Anthropic OAuth token through to <code>api.anthropic.com</code>. This layer solves the authentication collision problem where the bridge tunnel credentials and model inference credentials fight each other, all while the client remains completely unaware.</p>
+<p>The elegance runs deeper in <code>deepclaude.sh</code>&rsquo;s tiered model mapping: Opus and Sonnet both route to V4 Pro, while Haiku and Subagent route to V4 Flash. Claude Code&rsquo;s agent loop heavily depends on subagent fan-out — the main task uses Pro to preserve quality, sub-tasks use Flash to cut costs. That 14x cost reduction primarily comes from this tiering.</p>
+<p>There&rsquo;s also a subtle detail: DeepSeek&rsquo;s server recognizes the Claude Code client and automatically maxes out <code>thinking_effort</code> to compensate for the capability gap. But this means output token counts jump 30%–50%, so the billing isn&rsquo;t simply 15 ÷ 0.87.</p>
+<p>What it really solves isn&rsquo;t a money problem — it&rsquo;s a routing problem. When clients and models communicate through environment variables and other open conventions, the model vendor&rsquo;s moat gets dug away one shovel at a time.</p>
+<h2 id="the-architecture-two-apis-one-client">The Architecture: Two APIs, One Client</h2>
+<p>Claude Code communicates with Anthropic through a well-documented set of environment variables and API conventions. The official Anthropic provider wraps these elegantly, but when you want to use a different model, you need to intercept and redirect those calls without breaking the client&rsquo;s assumptions about how the world works.</p>
+<p>DeepClaude solves this with a proxy layer that runs locally on port 3200. When Claude Code sends a message to <code>/v1/messages</code> (the Anthropic endpoint), the proxy intercepts it, swaps out the authorization header with a DeepSeek API key, and forwards the request to <code>api.deepseek.com</code>. Other endpoints — like token counting or model metadata — continue routing to Anthropic with the original OAuth token intact.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="c1">// proxy/model-proxy.js (simplified)
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">express</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/v1/messages&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Swap to DeepSeek key for chat completions
+</span></span></span><span class="line"><span class="cl">  <span class="nx">req</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">&#39;authorization&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sb">`Bearer </span><span class="si">${</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DEEPSEEK_API_KEY</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Rewrite endpoint
+</span></span></span><span class="line"><span class="cl">  <span class="nx">req</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;/chat/completions&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Forward to DeepSeek...
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/v1/*&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Pass through to Anthropic with original OAuth
+</span></span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>This is the key insight: the client doesn&rsquo;t need to know it&rsquo;s talking to a different model. The protocol compatibility layer handles the translation.</p>
+<h2 id="model-tiering-quality-vs-cost">Model Tiering: Quality vs Cost</h2>
+<p>The <code>deepclaude.sh</code> script defines a mapping that most observers miss:</p>
+<table>
+	<thead>
+			<tr>
+					<th>Claude Model</th>
+					<th>Mapped To</th>
+					<th>Use Case</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td>Opus</td>
+					<td>DeepSeek V4 Pro</td>
+					<td>Complex reasoning, architecture decisions</td>
+			</tr>
+			<tr>
+					<td>Sonnet</td>
+					<td>DeepSeek V4 Pro</td>
+					<td>General coding tasks</td>
+			</tr>
+			<tr>
+					<td>Haiku</td>
+					<td>DeepSeek V4 Flash</td>
+					<td>Quick edits, file modifications</td>
+			</tr>
+			<tr>
+					<td>Subagent</td>
+					<td>DeepSeek V4 Flash</td>
+					<td>Parallel sub-tasks, tooling calls</td>
+			</tr>
+	</tbody>
+</table>
+<p>Claude Code&rsquo;s agent loop spawns multiple subagents for parallel work — file searches, test runs, documentation generation. These sub-tasks don&rsquo;t need Opus-level reasoning. Routing them to Flash cuts the per-token cost dramatically while maintaining acceptable latency.</p>
+<p>The main task, however, still gets Pro-level treatment. When Claude Code is planning a refactor or debugging a complex concurrency issue, you want the best model available. Pro handles that without question.</p>
+<h2 id="the-thinking-effort-hack">The Thinking Effort Hack</h2>
+<p>Here&rsquo;s the detail that separates shallow adapters from deep engineers: DeepSeek&rsquo;s server-side detects Claude Code&rsquo;s client User-Agent and automatically sets <code>thinking_effort</code> to maximum.</p>
+<p>For those unfamiliar, thinking effort controls how much chain-of-thought processing DeepSeek applies before responding. Max effort means more tokens generated internally before the final output appears.</p>
+<p>This creates an interesting dynamic: you get Pro-level reasoning but with 30–50% more output tokens. The cost savings are real but not as dramatic as the headline number suggests. V4 Flash at $0.01 per million tokens vs Opus at $0.015 per million tokens looks great until you factor in the 40% token inflation from maximum thinking effort.</p>
+<p>Still, even accounting for that, the economics heavily favor DeepSeek for most coding tasks.</p>
+<h2 id="what-this-means-for-the-ai-ecosystem">What This Means for the AI Ecosystem</h2>
+<p>The DeepClaude project exposes something fundamental about how AI clients and providers interact. When the interface is defined by open conventions — environment variables, standard API paths, well-known error formats — the &ldquo;vendor lock-in&rdquo; is much thinner than providers would like.</p>
+<p>Anthropic built an excellent client in Claude Code. They also built it on HTTP conventions that don&rsquo;t fundamentally require Anthropic&rsquo;s servers. DeepClaude proves this by swapping providers with a 300-line proxy and a shell script.</p>
+<p>This pattern will accelerate. As more clients use open protocols, model providers will compete more on price and quality, less on ecosystem lock-in. The proxy layer becomes commoditized infrastructure.</p>
+<p>For enterprises, this means: your Claude Code deployment doesn&rsquo;t have to use Claude models. The same applies to any client built on standard conventions. The question is whether your team has the engineering talent to build the bridge correctly.</p>
+<p>DeepClaude shows it&rsquo;s possible. The question is whether it&rsquo;s worth the maintenance burden for your organization.</p>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>DeepClaude routes Claude Code through DeepSeek via a local proxy, achieving ~14x cost reduction</li>
+<li>Model tiering (Pro for main tasks, Flash for subagents) is where most savings come from</li>
+<li>DeepSeek auto-maxes thinking_effort for Claude Code clients, inflating output tokens 30–50%</li>
+<li>Open API conventions make provider switching feasible but require engineering investment</li>
+<li>The real value is routing flexibility, not just cost savings</li>
+</ul>
+<h2 id="faq">FAQ</h2>
+<p><strong>Q: Can I use DeepClaude with other AI clients besides Claude Code?</strong></p>
+<p>A: DeepClaude specifically targets Claude Code&rsquo;s request format and environment variable conventions. Other clients like Cursor or Copilot have different client-server protocols, so the same proxy wouldn&rsquo;t work directly. However, the underlying principle — intercepting and routing API calls through a translation layer — applies to any client built on standard HTTP conventions.</p>
+<p><strong>Q: What is the main source of cost savings in the DeepClaude setup?</strong></p>
+<p>A: The primary cost reduction comes from routing subagents (parallel tasks like file searches and test runs) to DeepSeek V4 Flash instead of Claude Opus or Sonnet. Flash costs approximately $0.01 per million tokens versus $0.015 for Opus, and since subagent tasks make up the majority of API calls in a typical Claude Code session, tiering them to Flash delivers the bulk of the savings.</p>
+<p><strong>Q: Why does DeepSeek increase thinking_effort for Claude Code clients?</strong></p>
+<p>A: DeepSeek&rsquo;s server detects the Claude Code User-Agent and automatically sets thinking_effort to maximum as a compensation mechanism. This produces more thorough reasoning outputs but increases output token counts by 30–50%. It&rsquo;s DeepSeek&rsquo;s way of bridging the capability gap between their models and Anthropic&rsquo;s most capable models.</p>
+<p><strong>Q: Is the 17x cost reduction claim accurate?</strong></p>
+<p>A: The headline claim is somewhat optimistic. While DeepSeek&rsquo;s per-token pricing is dramatically lower than Anthropic&rsquo;s, the 30–50% increase in output tokens from maxed thinking_effort reduces the net savings to approximately 10–14x for typical coding workloads. The actual savings depend on your usage patterns — tasks with shorter responses see near 17x savings, while complex reasoning tasks see less.</p>
+<p><strong>Q: What authentication problems does the proxy layer solve?</strong></p>
+<p>A: The proxy resolves the &ldquo;bridge tunnel auth vs model inference auth&rdquo; collision. Claude Code uses Anthropic OAuth for its primary connections, but when you want to route through a different provider, you need to swap credentials without breaking the client&rsquo;s session management. The proxy intercepts requests and rewrites authorization headers on-the-fly, allowing both credential systems to coexist.</p>
+]]></content:encoded></item><item><title>DeepSeek-Reasonix: What a Cache-First Architecture Actually Looks Like</title><link>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</link><pubDate>Fri, 29 May 2026 00:00:00 +0000</pubDate><guid>https://mailmineragent.com/posts/deepseek-reasonix-cache-first-loop/</guid><description>DeepSeek&amp;#39;s prefix cache can hit 94-99% — if your agent is designed for it. Here is the architecture and the real data.</description><content:encoded><![CDATA[<h2 id="recap-the-cache-mismatch-problem">Recap: The Cache Mismatch Problem</h2>
 <p>In our <a href="https://mailmineragent.com/posts/why-claudecode-opencode-deepseek-cache-mismatch/">previous post</a>, we explained why pairing OpenCode / ClaudeCode with DeepSeek destroys your cache hit rate:</p>
 <ul>
 <li>DeepSeek uses <strong>strict full-prefix matching</strong> — a cache hit only fires when every byte from position <code>0</code> is identical to the previous request.</li>
