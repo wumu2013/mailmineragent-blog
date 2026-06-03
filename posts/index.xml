@@ -105,13 +105,13 @@
 <p>I&rsquo;ve spent the last two weeks reverse-engineering the methodology behind that claim. The source is a nearly five-minute video (281 seconds of ASR transcript) from a Douyin creator known in Chinese cross-border circles as &ldquo;蟹老板&rdquo; (Crab Boss). The content is dense—eight distinct dimensions, each with hard numbers attached. What follows is a structured breakdown of every dimension, the exact thresholds, and what they mean in practice for a refined-selection operation.</p>
 <h2 id="the-problem-with-feel-based-selection">The Problem with &ldquo;Feel-Based&rdquo; Selection</h2>
 <p>Before the framework, the context matters.</p>
-<p>Most small-to-mid-sized Amazon operators run what the Chinese ecommerce world calls &ldquo;铺货&rdquo; (rush-deployment): list everything, see what sticks, double down on winners. It&rsquo;s high-volume, high-waste, and extremely sensitive to headcount. You need people for every listing, every update, every price change.</p>
-<p>The refined-selection model—&ldquo;精铺&rdquo; in Chinese—is the opposite philosophy. Fewer products. More diligence on each. Lower review-count dependence. Higher hit rate per launch. The tradeoff is upfront analysis work: you have to be right before you commit inventory.</p>
-<p>&ldquo;成功率稳定在90%以上&rdquo; (consistently above 90% success rate) is the promise. The question is what makes it reproducible.</p>
+<p>Most small-to-mid-sized Amazon operators run what the Chinese ecommerce world calls rush-deployment: list everything, see what sticks, double down on winners. It&rsquo;s high-volume, high-waste, and extremely sensitive to headcount. You need people for every listing, every update, every price change.</p>
+<p>The refined-selection model is the opposite philosophy. Fewer products. More diligence on each. Lower review-count dependence. Higher hit rate per launch. The tradeoff is upfront analysis work: you have to be right before you commit inventory.</p>
+<p>The promise is a consistently above 90% success rate. The question is what makes it reproducible.</p>
 <h2 id="the-eight-dimension-framework">The Eight-Dimension Framework</h2>
-<h3 id="dimension-1-precise-traffic-keywords-精准流量词">Dimension 1: Precise Traffic Keywords (精准流量词)</h3>
+<h3 id="dimension-1-precise-traffic-keywords">Dimension 1: Precise Traffic Keywords</h3>
 <p>The first dimension is foundational. Every product must have a &ldquo;precise traffic keyword&rdquo;—a keyword that accurately describes the product&rsquo;s function, material, attribute, use case, or target user.</p>
-<p>Examples: &ldquo;木质床底带轮子收纳箱&rdquo; (wooden under-bed storage bin with wheels), &ldquo;40磅金属马克杯&rdquo; (40-lb metal mug). These aren&rsquo;t generic categories. They&rsquo;re specific enough that a search returns direct competitors, not adjacent products.</p>
+<p>Examples: &ldquo;wooden under-bed storage bin with wheels&rdquo;, &ldquo;40-lb metal mug&rdquo;. These aren&rsquo;t generic categories. They&rsquo;re specific enough that a search returns direct competitors, not adjacent products.</p>
 <p><strong>Why this matters—four reasons:</strong></p>
 <ol>
 <li><strong>Find direct competitors.</strong> Only precise keywords return a clean competitive set for analysis.</li>
@@ -121,7 +121,7 @@
 </ol>
 <p><strong>The hard rule:</strong> No precise keyword = no product. Period.</p>
 <hr>
-<h3 id="dimension-2-operational-difficulty-运营难度">Dimension 2: Operational Difficulty (运营难度)</h3>
+<h3 id="dimension-2-operational-difficulty">Dimension 2: Operational Difficulty</h3>
 <p>This dimension measures how hard it is for a new, low-review listing to compete in a given subcategory. The metric is a ratio:</p>
 <blockquote>
 <p><strong>Low-review top-5 average sales ÷ Top-5 average sales &gt; 20%</strong></p>
@@ -154,22 +154,22 @@
 <ul>
 <li>If low-review listings are already generating sales → market is not saturated</li>
 <li>If review-free &ldquo;裸奔&rdquo; (naked) listings are also converting → market has genuine demand gaps</li>
-<li>If FBM (Fulfilled by Merchant) listings are moving steadily → demand is broad and旺盛 (robust)</li>
+<li>If FBM (Fulfilled by Merchant) listings are moving steadily → demand is broad and robust</li>
 <li>If no obvious price/review wars → competition is still healthy</li>
 <li>If the subcategory has no aggressive review acquisition → advertising can carry new products</li>
 </ul>
 <hr>
-<h3 id="dimension-3-roi-and-capital-efficiency-投产比与资金利用效率">Dimension 3: ROI and Capital Efficiency (投产比与资金利用效率)</h3>
+<h3 id="dimension-3-roi-and-capital-efficiency">Dimension 3: ROI and Capital Efficiency</h3>
 <p>The ROI threshold is <strong>≥ 120%</strong>. Products below this line don&rsquo;t get through the gate.</p>
 <p>But ROI does two jobs here. It&rsquo;s not just a profitability measure. It acts as a market health indicator.</p>
 <p><strong>First function: market health signal.</strong> If a large proportion of competitors have poor ROI, that subcategory is already overcrowded. High ROI across competitors means the market is still dividing profits healthily.</p>
 <p><strong>Second function: capital efficiency.</strong> For cross-border ecommerce, the cash conversion cycle is brutal. You pay suppliers in RMB, ship to Amazon warehouses in the US or Europe, and wait 30–60 days to collect USD. Every dollar tied up in FBA inventory is a dollar not working elsewhere.</p>
 <p>The cost model Huang uses:</p>
-<pre tabindex="0"><code>Total AMZ cost = Procurement + Freight (头程) + FBA fulfillment fees + Platform commission
+<pre tabindex="0"><code>Total AMZ cost = Procurement + Freight (head freight) + FBA fulfillment fees + Platform commission
 </code></pre><p>These are not overhead. They are embedded in the selling price—they come off the top before margin. Higher capital turnover efficiency directly multiplies effective return on investment.</p>
 <p><strong>The rule:</strong> A 120% ROI on a 90-day cash cycle beats 150% ROI on a 180-day cycle. Factor the cycle, not just the percentage.</p>
 <hr>
-<h3 id="dimension-4-differentiation-and-supply-chain-fit-差异化与供应链匹配度">Dimension 4: Differentiation and Supply Chain Fit (差异化与供应链匹配度)</h3>
+<h3 id="dimension-4-differentiation-and-supply-chain-fit">Dimension 4: Differentiation and Supply Chain Fit</h3>
 <p>Differentiation is where most operators cut corners—and where most get caught.</p>
 <p>Differentiation paths, in order of execution:</p>
 <ol>
@@ -188,46 +188,46 @@
 </ul>
 <p>If any of these fail, the product goes to a &ldquo;backup list.&rdquo; It may be a good product but an un-executable one under current conditions.</p>
 <hr>
-<h3 id="dimension-5-entry-timing-进场时间节点">Dimension 5: Entry Timing (进场时间节点)</h3>
+<h3 id="dimension-5-entry-timing">Dimension 5: Entry Timing</h3>
 <p>Amazon subcategories have peak and off-peak seasons. Entry timing is the fifth dimension, and the standard rule is:</p>
 <p><strong>Enter 1–2 months before the peak sales season.</strong></p>
-<p>The logic: new listings need time to accumulate reviews, build listing权重 (authority/weight), and develop ad campaign history. By the time peak traffic arrives, the listing should already be positioned. Riding the wave is fundamentally different from trying to establish yourself in it.</p>
-<p><strong>The forward-looking seasonality rule:</strong> Operators evaluate products based on &ldquo;未来三到五个月&rdquo; (the next three to five months), not current-season data. A product that&rsquo;s doing well right now—particularly if it has low review counts and high sales—may be a seasonal or event-driven spike (Cinco de Mayo, July 4th, Teacher Appreciation Week, Mother&rsquo;s Day). These peaks are already missed by the time the data appears.</p>
-<p><strong>Seasonal/event products specifically:</strong> If you want to play a seasonal product, you need to enter the market <strong>4–5 months in advance.</strong> Research, selection, sourcing, shipping, and listing all have to happen before the window opens. &ldquo;进场已经完全来不及了&rdquo; (it&rsquo;s completely too late to enter now) is a normal state for the current cycle&rsquo;s seasonal products.</p>
+<p>The logic: new listings need time to accumulate reviews, build listing authority, and develop ad campaign history. By the time peak traffic arrives, the listing should already be positioned. Riding the wave is fundamentally different from trying to establish yourself in it.</p>
+<p><strong>The forward-looking seasonality rule:</strong> Operators evaluate products based on the next three to five months, not current-season data. A product that&rsquo;s doing well right now—particularly if it has low review counts and high sales—may be a seasonal or event-driven spike (Cinco de Mayo, July 4th, Teacher Appreciation Week, Mother&rsquo;s Day). These peaks are already missed by the time the data appears.</p>
+<p><strong>Seasonal/event products specifically:</strong> If you want to play a seasonal product, you need to enter the market 4–5 months in advance. Research, selection, sourcing, shipping, and listing all have to happen before the window opens.</p>
 <hr>
-<h3 id="dimension-6-seasonal-event-and-trend-products-季节性节日性活动产品">Dimension 6: Seasonal, Event, and Trend Products (季节性/节日性/活动产品)</h3>
+<h3 id="dimension-6-seasonal-event-and-trend-products">Dimension 6: Seasonal, Event, and Trend Products</h3>
 <p>Building on the timing dimension: the system flags whether a product is seasonal, event-linked, or trend-driven.</p>
 <p><strong>The detection signal:</strong> Low review counts + high sales volume + sudden appearance in rankings. This combination almost always means the product is riding a current event or trend (Cinco de Mayo, Independence Day, back-to-school, etc.).</p>
 <p><strong>The rule for event products:</strong> Research 4–5 months ahead, select 4–5 months ahead, ship 4–5 months ahead. The refined-selection model can do event products, but only with a long enough runway.</p>
 <p><strong>The warning:</strong> Event products that look attractive in real-time data are almost always already past entry point for the current cycle. The data lag is structural—by the time you see the spike, the window is closed.</p>
 <hr>
-<h3 id="dimension-7-policy-and-compliance-risk-产品政策合规性">Dimension 7: Policy and Compliance Risk (产品政策合规性)</h3>
+<h3 id="dimension-7-policy-and-compliance-risk">Dimension 7: Policy and Compliance Risk</h3>
 <p>This dimension is where operators lose everything.</p>
 <p>Compliance risk has three categories:</p>
-<p><strong>1. Patent infringement (外观专利/发明专利)</strong>
+<p><strong>1. Patent infringement</strong>
 Standard but non-negotiable. Clear the product with a patent search before committing.</p>
-<p><strong>2. Copyright infringement (版权侵权)</strong>
+<p><strong>2. Copyright infringement</strong>
 The TRO (Temporary Restraining Order) minefield. Copyright protection in the US extends broadly:</p>
 <ul>
 <li>Books, publications, literary works</li>
 <li>Artwork, paintings, illustrations</li>
-<li>Film/TV IP, character names,影视 (film/TV) titles</li>
+<li>Film/TV IP, character names, film/TV titles</li>
 <li>Software, programs</li>
 <li>3D design files, photographs, sculptures</li>
 </ul>
 <p>If your product or its listing includes any of these without a license, you are at risk. Forcing a settlement from a Chinese company via TRO is a known tactic among rights holders.</p>
-<p><strong>3. Platform policy violations (平台政策合规性)</strong>
+<p><strong>3. Platform policy violations</strong>
 This is more dangerous than IP infringement because it can result in immediate store suspension or termination. Examples include:</p>
 <ul>
 <li>Electronics with safety implications</li>
-<li>Disallowed product categories (某些武器类产品)</li>
-<li>Products restricted for certain seller types (e.g., Chinese domestic sellers cannot list certain categories)</li>
+<li>Disallowed product categories (certain weapon categories)</li>
+<li>Products restricted for certain seller types</li>
 <li>Products involving personal safety, property safety, or financial safety</li>
 </ul>
 <p>Products that touch platform-restricted categories need to be evaluated before design finalization, not after.</p>
 <p><strong>The workflow:</strong> Product design finalization → IP clearance → compliance review → listing. Not the other way around.</p>
 <hr>
-<h3 id="dimension-8-inventory-quantity-and-fba-warehouse-layout-金控发货数量遍体形态布局">Dimension 8: Inventory Quantity and FBA Warehouse Layout (金控发货数量/遍体形态布局)</h3>
+<h3 id="dimension-8-inventory-quantity-and-fba-warehouse-layout">Dimension 8: Inventory Quantity and FBA Warehouse Layout</h3>
 <p>The final dimension manages inventory risk.</p>
 <p><strong>First-shipment quantity calculation:</strong></p>
 <p>Reference a direct competitor with:</p>
@@ -246,10 +246,10 @@ This is more dangerous than IP infringement because it can result in immediate s
 <li>Demand volatility coefficient derived from historical data</li>
 </ul>
 <p>The goal: avoid both overstocking during low season and stockout during peak. Neither is free.</p>
-<p><strong>The FBA multi-warehouse layout strategy (分仓布局):</strong></p>
-<pre tabindex="0"><code>Sales inventory (销售遍体)     → Primary fulfillment warehouse
-Backup inventory (备用遍体)   → Secondary warehouse, holds reserve stock
-Replenishment inventory (补货遍体) → Pre-positioned for fast restock
+<p><strong>The FBA multi-warehouse layout strategy:</strong></p>
+<pre tabindex="0"><code>Sales inventory     → Primary fulfillment warehouse
+Backup inventory   → Secondary warehouse, holds reserve stock
+Replenishment inventory → Pre-positioned for fast restock
 </code></pre><p>Splitting inventory across multiple warehouses:</p>
 <ul>
 <li>Prevents single-warehouse incidents from taking down the listing</li>
@@ -319,7 +319,7 @@ Replenishment inventory (补货遍体) → Pre-positioned for fast restock
 </table>
 <h2 id="faq">FAQ</h2>
 <p><strong>Q: What is the most important dimension in Amazon refined-selection product selection?</strong></p>
-<p>A: Precise traffic keywords (精准流量词) is the foundational dimension—everything else depends on it. Without precise keywords, you cannot identify a clean competitive set, build a targeted ad architecture, or verify that a real market exists. No precise keyword = no viable product, regardless of how good the other seven dimensions look.</p>
+<p>A: Precise traffic keywords is the foundational dimension—everything else depends on it. Without precise keywords, you cannot identify a clean competitive set, build a targeted ad architecture, or verify that a real market exists. No precise keyword = no viable product, regardless of how good the other seven dimensions look.</p>
 <p><strong>Q: How do you determine if an Amazon subcategory is new-listing friendly?</strong></p>
 <p>A: Calculate the ratio of average daily sales for the top 5 low-review (≤ 30 reviews) listings divided by the top 5 overall listings in the subcategory. If this ratio exceeds 20%, the subcategory is friendly to new listings. A ratio below 10% indicates a review wall that will be difficult for new products to penetrate.</p>
 <p><strong>Q: Why is 120% ROI the minimum threshold for Amazon product selection?</strong></p>
