@@ -14,19 +14,19 @@ I've spent the last two weeks reverse-engineering the methodology behind that cl
 
 Before the framework, the context matters.
 
-Most small-to-mid-sized Amazon operators run what the Chinese ecommerce world calls "铺货" (rush-deployment): list everything, see what sticks, double down on winners. It's high-volume, high-waste, and extremely sensitive to headcount. You need people for every listing, every update, every price change.
+Most small-to-mid-sized Amazon operators run what the Chinese ecommerce world calls rush-deployment: list everything, see what sticks, double down on winners. It's high-volume, high-waste, and extremely sensitive to headcount. You need people for every listing, every update, every price change.
 
-The refined-selection model—"精铺" in Chinese—is the opposite philosophy. Fewer products. More diligence on each. Lower review-count dependence. Higher hit rate per launch. The tradeoff is upfront analysis work: you have to be right before you commit inventory.
+The refined-selection model is the opposite philosophy. Fewer products. More diligence on each. Lower review-count dependence. Higher hit rate per launch. The tradeoff is upfront analysis work: you have to be right before you commit inventory.
 
-"成功率稳定在90%以上" (consistently above 90% success rate) is the promise. The question is what makes it reproducible.
+The promise is a consistently above 90% success rate. The question is what makes it reproducible.
 
 ## The Eight-Dimension Framework
 
-### Dimension 1: Precise Traffic Keywords (精准流量词)
+### Dimension 1: Precise Traffic Keywords
 
 The first dimension is foundational. Every product must have a "precise traffic keyword"—a keyword that accurately describes the product's function, material, attribute, use case, or target user.
 
-Examples: "木质床底带轮子收纳箱" (wooden under-bed storage bin with wheels), "40磅金属马克杯" (40-lb metal mug). These aren't generic categories. They're specific enough that a search returns direct competitors, not adjacent products.
+Examples: "wooden under-bed storage bin with wheels", "40-lb metal mug". These aren't generic categories. They're specific enough that a search returns direct competitors, not adjacent products.
 
 **Why this matters—four reasons:**
 
@@ -39,7 +39,7 @@ Examples: "木质床底带轮子收纳箱" (wooden under-bed storage bin with wh
 
 ---
 
-### Dimension 2: Operational Difficulty (运营难度)
+### Dimension 2: Operational Difficulty
 
 This dimension measures how hard it is for a new, low-review listing to compete in a given subcategory. The metric is a ratio:
 
@@ -59,13 +59,13 @@ Translation: take the five best-performing listings with 30 reviews or fewer. Av
 
 - If low-review listings are already generating sales → market is not saturated
 - If review-free "裸奔" (naked) listings are also converting → market has genuine demand gaps
-- If FBM (Fulfilled by Merchant) listings are moving steadily → demand is broad and旺盛 (robust)
+- If FBM (Fulfilled by Merchant) listings are moving steadily → demand is broad and robust
 - If no obvious price/review wars → competition is still healthy
 - If the subcategory has no aggressive review acquisition → advertising can carry new products
 
 ---
 
-### Dimension 3: ROI and Capital Efficiency (投产比与资金利用效率)
+### Dimension 3: ROI and Capital Efficiency
 
 The ROI threshold is **≥ 120%**. Products below this line don't get through the gate.
 
@@ -78,7 +78,7 @@ But ROI does two jobs here. It's not just a profitability measure. It acts as a 
 The cost model Huang uses:
 
 ```
-Total AMZ cost = Procurement + Freight (头程) + FBA fulfillment fees + Platform commission
+Total AMZ cost = Procurement + Freight (head freight) + FBA fulfillment fees + Platform commission
 ```
 
 These are not overhead. They are embedded in the selling price—they come off the top before margin. Higher capital turnover efficiency directly multiplies effective return on investment.
@@ -87,7 +87,7 @@ These are not overhead. They are embedded in the selling price—they come off t
 
 ---
 
-### Dimension 4: Differentiation and Supply Chain Fit (差异化与供应链匹配度)
+### Dimension 4: Differentiation and Supply Chain Fit
 
 Differentiation is where most operators cut corners—and where most get caught.
 
@@ -110,21 +110,21 @@ If any of these fail, the product goes to a "backup list." It may be a good prod
 
 ---
 
-### Dimension 5: Entry Timing (进场时间节点)
+### Dimension 5: Entry Timing
 
 Amazon subcategories have peak and off-peak seasons. Entry timing is the fifth dimension, and the standard rule is:
 
 **Enter 1–2 months before the peak sales season.**
 
-The logic: new listings need time to accumulate reviews, build listing权重 (authority/weight), and develop ad campaign history. By the time peak traffic arrives, the listing should already be positioned. Riding the wave is fundamentally different from trying to establish yourself in it.
+The logic: new listings need time to accumulate reviews, build listing authority, and develop ad campaign history. By the time peak traffic arrives, the listing should already be positioned. Riding the wave is fundamentally different from trying to establish yourself in it.
 
-**The forward-looking seasonality rule:** Operators evaluate products based on "未来三到五个月" (the next three to five months), not current-season data. A product that's doing well right now—particularly if it has low review counts and high sales—may be a seasonal or event-driven spike (Cinco de Mayo, July 4th, Teacher Appreciation Week, Mother's Day). These peaks are already missed by the time the data appears.
+**The forward-looking seasonality rule:** Operators evaluate products based on the next three to five months, not current-season data. A product that's doing well right now—particularly if it has low review counts and high sales—may be a seasonal or event-driven spike (Cinco de Mayo, July 4th, Teacher Appreciation Week, Mother's Day). These peaks are already missed by the time the data appears.
 
-**Seasonal/event products specifically:** If you want to play a seasonal product, you need to enter the market **4–5 months in advance.** Research, selection, sourcing, shipping, and listing all have to happen before the window opens. "进场已经完全来不及了" (it's completely too late to enter now) is a normal state for the current cycle's seasonal products.
+**Seasonal/event products specifically:** If you want to play a seasonal product, you need to enter the market 4–5 months in advance. Research, selection, sourcing, shipping, and listing all have to happen before the window opens.
 
 ---
 
-### Dimension 6: Seasonal, Event, and Trend Products (季节性/节日性/活动产品)
+### Dimension 6: Seasonal, Event, and Trend Products
 
 Building on the timing dimension: the system flags whether a product is seasonal, event-linked, or trend-driven.
 
@@ -136,30 +136,30 @@ Building on the timing dimension: the system flags whether a product is seasonal
 
 ---
 
-### Dimension 7: Policy and Compliance Risk (产品政策合规性)
+### Dimension 7: Policy and Compliance Risk
 
 This dimension is where operators lose everything.
 
 Compliance risk has three categories:
 
-**1. Patent infringement (外观专利/发明专利)**
+**1. Patent infringement**
 Standard but non-negotiable. Clear the product with a patent search before committing.
 
-**2. Copyright infringement (版权侵权)**
+**2. Copyright infringement**
 The TRO (Temporary Restraining Order) minefield. Copyright protection in the US extends broadly:
 - Books, publications, literary works
 - Artwork, paintings, illustrations
-- Film/TV IP, character names,影视 (film/TV) titles
+- Film/TV IP, character names, film/TV titles
 - Software, programs
 - 3D design files, photographs, sculptures
 
 If your product or its listing includes any of these without a license, you are at risk. Forcing a settlement from a Chinese company via TRO is a known tactic among rights holders.
 
-**3. Platform policy violations (平台政策合规性)**
+**3. Platform policy violations**
 This is more dangerous than IP infringement because it can result in immediate store suspension or termination. Examples include:
 - Electronics with safety implications
-- Disallowed product categories (某些武器类产品)
-- Products restricted for certain seller types (e.g., Chinese domestic sellers cannot list certain categories)
+- Disallowed product categories (certain weapon categories)
+- Products restricted for certain seller types
 - Products involving personal safety, property safety, or financial safety
 
 Products that touch platform-restricted categories need to be evaluated before design finalization, not after.
@@ -168,7 +168,7 @@ Products that touch platform-restricted categories need to be evaluated before d
 
 ---
 
-### Dimension 8: Inventory Quantity and FBA Warehouse Layout (金控发货数量/遍体形态布局)
+### Dimension 8: Inventory Quantity and FBA Warehouse Layout
 
 The final dimension manages inventory risk.
 
@@ -191,12 +191,12 @@ This is deliberately conservative. It leaves room to reorder based on actual mar
 
 The goal: avoid both overstocking during low season and stockout during peak. Neither is free.
 
-**The FBA multi-warehouse layout strategy (分仓布局):**
+**The FBA multi-warehouse layout strategy:**
 
 ```
-Sales inventory (销售遍体)     → Primary fulfillment warehouse
-Backup inventory (备用遍体)   → Secondary warehouse, holds reserve stock
-Replenishment inventory (补货遍体) → Pre-positioned for fast restock
+Sales inventory     → Primary fulfillment warehouse
+Backup inventory   → Secondary warehouse, holds reserve stock
+Replenishment inventory → Pre-positioned for fast restock
 ```
 
 Splitting inventory across multiple warehouses:
@@ -235,7 +235,7 @@ The framework is designed for the operator who wants to build a business that do
 
 **Q: What is the most important dimension in Amazon refined-selection product selection?**
 
-A: Precise traffic keywords (精准流量词) is the foundational dimension—everything else depends on it. Without precise keywords, you cannot identify a clean competitive set, build a targeted ad architecture, or verify that a real market exists. No precise keyword = no viable product, regardless of how good the other seven dimensions look.
+A: Precise traffic keywords is the foundational dimension—everything else depends on it. Without precise keywords, you cannot identify a clean competitive set, build a targeted ad architecture, or verify that a real market exists. No precise keyword = no viable product, regardless of how good the other seven dimensions look.
 
 **Q: How do you determine if an Amazon subcategory is new-listing friendly?**
 
