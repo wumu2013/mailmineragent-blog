@@ -7,7 +7,7 @@ keywords: ["kitchen supply wholesale", "vientiane laos", "laos cross-border busi
 author: "MailMiner Editorial Team"
 description: "Pan built a $280K, 1,200 sqm kitchen supply warehouse in Vientiane, Laos. Capital, language, localization lessons for cross-border operators."
 cover:
-  image: "images/kitchen-supply-wholesale-laos-sichuan-cover.png"
+  image: "images/kitchen-supply-wholesale-laos-sichuan-cover.jpg"
   alt: "1,200 sqm kitchen supply wholesale warehouse in Vientiane, Laos"
   relative: false
   caption: "Pan's kitchen supply warehouse on 450 Year Road, Vientiane"

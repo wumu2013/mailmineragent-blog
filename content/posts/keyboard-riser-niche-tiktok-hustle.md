@@ -7,7 +7,7 @@ keywords: ["keyboard riser niche", "tiktok shop case study", "niche ecommerce pl
 author: "MailMiner Editorial Team"
 description: "How a beginner sells custom keyboard risers for women with long nail art on TikTok Shop — 30 orders/day, $4-8K monthly profit, zero ad spend. Niche case study."
 cover:
-  image: "images/keyboard-riser-tiktok-hustle-cover.png"
+  image: "images/keyboard-riser-tiktok-hustle-cover.jpg"
   alt: "Custom tall keyboard riser for typing with long acrylic nails"
   relative: false
   caption: "Custom keyboard riser designed for nail-art typists"
