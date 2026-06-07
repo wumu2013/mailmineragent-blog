@@ -1,0 +1,21 @@
+# MailMiner Agent Blog
+
+> MailMiner Agent Blog publishes real case studies on AI engineering and cross-border e-commerce — TikTok Shop organic commerce, niche product selection, 1688 sourcing, and $0-ad-spend solo-seller playbooks. Editorial content is published by the team behind mailminer.work, a commercial AI email-mining and automation product.
+
+## Core Pages
+- [Posts](https://mailmineragent.com/posts/) : Cross-border ecommerce and AI operations blog index
+- [About](https://mailmineragent.com/about/) : Editorial team background, disclosure, and contact
+
+## Case Studies & Niche Playbooks
+- [Can a Custom Keyboard Riser for Long Nails Hit 30 Orders a Day on TikTok Shop? (Case Study)](https://mailmineragent.com/posts/keyboard-riser-niche-tiktok-hustle/) : TikTok Shop case study — custom keyboard riser for long-nail typists, 30–50 orders/day, $4K–$8K/month profit, zero ad spend
+- [From TikTok to Shopify: How a Spanish Founder Built a Cross-Border Ecommerce Brand](https://mailmineragent.com/posts/from-tiktok-to-shopify-spanish-ecommerce/) : TikTok-to-Shopify founder journey, Spanish market case study
+- [The 90% Selection Framework: How This Amazon Refined-Selection Operator Achieves Consistent Success](https://mailmineragent.com/posts/amazon-refined-selection-90-percent-success-framework/) : Amazon refined-selection framework with 8 hard-numbered dimensions
+- [From Shenzhen University to a $3M/Year Men's Clothing Empire in Laos](https://mailmineragent.com/posts/from-shenzhen-university-to-laos-clothing-empire/) : Cross-border clothing case study, Shenzhen-to-Vientiane founder path
+- [Kitchen Supply Wholesale in Laos: How a Sichuan Entrepreneur Built a 50-Employee Operation](https://mailmineragent.com/posts/kitchen-supply-wholesale-laos-sichuan-entrepreneur/) : B2B wholesale case study, Laos market entry playbook
+- [The 30% Club: AI Transformation Patterns in Cross-Border Ecommerce](https://mailmineragent.com/posts/the-30-percent-club-ai-transformation-patterns/) : AI transformation pattern analysis for cross-border operators
+- [RPA + AI: How This Cross-Border Ecommerce Operator Hit $30M with 50 Employees](https://mailmineragent.com/posts/rpa-ai-cross-border-ecommerce-50-employees-300m/) : RPA and AI automation case study at scale
+
+## AI & Engineering Content
+- [How AI Is Transforming Cross-Border Trade: A 2026 Field Report](https://mailmineragent.com/posts/how-ai-is-transforming-cross-border-trade/) : AI transformation survey across cross-border trade workflows
+- [Mail Transfer Agent Explained: How Production AI Systems Send Email at Scale](https://mailmineragent.com/posts/mail-transfer-agent-explained/) : Engineering deep dive on production email-sending infrastructure
+- [DeepClaude: Routing Claude Code Through a DeepSeek Proxy](https://mailmineragent.com/posts/deepclaude-claude-code-deepseek-proxy/) : LLM gateway pattern, multi-model routing case study

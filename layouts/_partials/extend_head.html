@@ -1,0 +1,23 @@
+{{- /* FAQPage JSON-LD — driven by .Params.faq array in frontmatter */ -}}
+{{- if and .Params.faq (gt (len .Params.faq) 0) -}}
+{{- $faq := .Params.faq -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{- range $i, $item := $faq -}}
+    {{- if $i }},{{ end }}
+    {
+      "@type": "Question",
+      "name": {{ $item.q }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ $item.a }}
+      }
+    }
+    {{- end }}
+  ]
+}
+</script>
+{{- end -}}

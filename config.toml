@@ -54,6 +54,13 @@ weight = 20
     Title = "Welcome to MailMiner Agent Blog"
     Content = "AI systems engineering & real-world cross-border entrepreneurship case studies.\nTechnical deep dives and actionable business playbooks."
 
+  [params.schema]
+    publisherType = "Organization"
+    sameAs = [
+      "https://github.com/wumu2013/mailmineragent-blog",
+      "https://mailminer.work"
+    ]
+
   [[params.socialIcons]]
     name = "github"
     url = "https://github.com/wumu2013/mailmineragent-blog"
@@ -63,7 +70,17 @@ weight = 20
     url = "https://mailminer.work"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS", "JSON", "LLMs"]
+
+[mediaTypes]
+  [mediaTypes."text/plain"]
+    suffixes = ["txt"]
+
+[outputFormats.LLMs]
+  mediaType = "text/plain"
+  baseName = "llms"
+  isPlainText = true
+  notAlternative = true
 
 [markup]
   [markup.goldmark]
