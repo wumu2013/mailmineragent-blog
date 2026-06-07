@@ -37,7 +37,8 @@ We started writing here because the cross-border seller community and the AI eng
 
 ## Contact & Disclosure
 
-- **Reach us:** [mailminer.work](https://mailminer.work) — we read every message.
+- **Email:** [support@mailminer.work](mailto:support@mailminer.work) — for reader feedback, correction requests, and case-study tips.
+- **Website:** [mailminer.work](https://mailminer.work) — for product info and company contact.
 - **RSS / JSON feed:** available on the [Posts](/posts/) page for readers who prefer feed readers.
 - **Disclosure:** MailMiner Agent Blog is published by the team behind [mailminer.work](https://mailminer.work), a commercial AI email-mining and automation product. Posts on this blog are editorial work; they are not paid promotions for the product, and the product team has no editorial veto over what we publish. The two are kept separate on purpose.
 
