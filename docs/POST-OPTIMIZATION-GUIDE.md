@@ -1,6 +1,6 @@
 # 文章优化指南（Post Optimization Guide）
 
-> 本文档记录 MailMiner Agent Blog 团队对存量文章做 SEO + E-E-A-T 整改时沉淀下来的标准流程。所有阈值、模板、命令均来自对 `keyboard-riser-niche-tiktok-hustle` 与 `kitchen-supply-wholesale-laos-sichuan-entrepreneur` 两篇的实际优化经验。
+> 本文档记录 MailMiner Agent Blog 团队对存量文章做 SEO + E-E-A-T 整改时沉淀下来的标准流程。所有阈值、模板、命令均来自对 `keyboard-riser-niche-tiktok-hustle`、`kitchen-supply-wholesale-laos-sichuan-entrepreneur` 与 `from-shenzhen-university-to-laos-clothing-empire` 三篇的实际优化经验。
 
 ---
 
@@ -11,6 +11,12 @@
 - [2. 模块 B：标题层级规范化](#2-模块-b标题层级规范化)
 - [3. 模块 C：E-E-A-T 强化](#3-模块-ce-e-a-t-强化)
 - [4. 模块 D：封面图与视觉资产](#4-模块-d封面图与视觉资产)
+  - [4.1 图片规格](#41-图片规格)
+  - [4.2 生成工具：9router / 20128](#42-生成工具9router--20128)
+  - [4.3 Prompt 写作公式](#43-prompt-写作公式)
+  - [4.4 Alt 文本写作公式](#44-alt-文本写作公式)
+  - [4.5 验证 alt 真的进了 `<img>` 标签](#45-验证-alt-真的进了-img-标签)
+  - [4.6 封面图的迭代生成（不满意的常见场景）](#46-封面图的迭代生成不满意的常见场景)
 - [5. 收尾：语言清理与单位补全](#5-收尾语言清理与单位补全)
 - [6. 构建与验证](#6-构建与验证)
 - [7. 提交规范](#7-提交规范)
@@ -85,8 +91,17 @@ title: "A $280K Kitchen Supply Warehouse in Laos: Why This Sichuan Entrepreneur 
 title: "Kitchen Supply Wholesale in Laos: A $280K Vientiane Playbook"
 ```
 
+```yaml
+# ❌ 优化前（107 字符，含全名"Shenzhen University"和"2000s-Born"——Google 截断)
+title: "From Shenzhen University to a Clothing Empire in Laos: A 2000s-Born Entrepreneur's $700K Bet on Southeast Asia"
+
+# ✅ 优化后（54 字符，person-identifier 缩写 + 城市 + 金额 + subject)
+title: "Shenzhen Grad Builds $700K Menswear Store in Vientiane"
+```
+
 **避坑**：
 - 不要把"人名"或"采访对象"放进 Title（搜的人不关心是谁）
+- 不要把**全名**的机构名（如 "Shenzhen University"）放 Title——缩写为 "Shenzhen Grad" / "Sichuan Seller" 等 person-identifier，更利于搜索匹配
 - 不要用 clickbait 副标（"You won't believe..."）—— Google 降权
 - 数字尽量用阿拉伯数字（"$280K" 而非 "two hundred and eighty thousand"）
 
@@ -102,6 +117,14 @@ description: "A regular employee with zero e-commerce background found a hyper-s
 
 # ✅ 优化后（159 字符，含数字 + 价值 + 关键词）
 description: "How a beginner sells custom keyboard risers for women with long nail art on TikTok Shop — 30 orders/day, $4-8K monthly profit, zero ad spend. Niche case study."
+```
+
+```yaml
+# ❌ 优化前（252 字符，重复 + 长串）
+description: "A 2000s-born CS graduate from Shenzhen University bypassed Big Tech and invested $700K to open a menswear store in Laos. After scouting 10 countries across Central Asia, Africa, and Southeast Asia, he built a business doing $1,000+ daily revenue — and claims 5-month payback."
+
+# ✅ 优化后（160 字符，含 5 个核心数字 + 价值引导）
+description: "A Shenzhen University CS grad skipped Big Tech to invest $700K in a Vientiane menswear store. $1,000/day revenue, 5-month payback. Cross-border retail playbook."
 ```
 
 **调试字符数的快速方法**：
@@ -202,6 +225,13 @@ date: ...
 | `## Finding the Pain Point` | `## Finding the Pain Point: Why Standard Risers Fail` | `standard risers` |
 | `## The Customization Pivot` | `## The Customization Pivot: A Taller Keyboard Riser` | `taller keyboard riser` |
 | `## The Content Strategy` | `## TikTok Content Strategy for Niche Products` | `tiktok content strategy` |
+| `## The Graduate Who Chose Laos Over Big Tech` | `## The Shenzhen Grad Who Chose Vientiane Over Big Tech` | `vientiane` |
+| `## Why Domestic E-Commerce Became Unsustainable` | `## Why Chinese Livestream E-Commerce Stopped Working` | `livestream e-commerce` |
+| `## The Grand Scouting Tour: 10 Countries, 3 Continents, Half a Year` | `## The 10-Country Scouting Tour Across 3 Regions` | `10 country scouting tour` |
+| `## The Laos Bet: Market Structure and Positioning` | `## The Vientiane Menswear Market: A Two-Tier Structure` | `vientiane menswear` |
+| `## The Economics: $700K Breakdown` | `## The $700K Investment Breakdown: Capital, Store, Inventory` | `investment breakdown` |
+| `## Livestream Commerce, Laos Edition` | `## Livestream Commerce, Vientiane Low-Tech Edition` | `vientiane livestream` |
+| `## Beyond the Numbers` | `## Beyond the Numbers: Chinese Entrepreneurial Energy Abroad` | `chinese entrepreneurs` |
 
 ### 2.4 TL;DR 块引
 
@@ -292,6 +322,27 @@ The MailMiner Editorial Team is a group of cross-border e-commerce operators, Ti
 - ✅ 链到 2-3 篇同主题 `/posts/...`（出现在 E-E-A-T section 的 "Past coverage" 段）
 - ✅ 文中**自然引用**其它文章时，**主动加超链**（如："the first — a [Shenzhen University graduate's menswear store](/posts/from-shenzhen-university-to-laos-clothing-empire/) with..."）
 
+**系列文章的交叉链接**（series articles cross-link）：
+
+当两篇文章覆盖**同一市场或同一主题**（如中国创业者出海老挝），应在两篇中**互相加 1 条叙述性内链**，形成小型 link graph：
+
+```markdown
+# 在 from-shenzhen-university-to-laos-clothing-empire.md 末尾加：
+This is the first profile in an informal series on Chinese entrepreneurs in Laos.
+The second — a [kitchen supply wholesale warehouse in Vientiane](/posts/kitchen-supply-wholesale-laos-sichuan-entrepreneur/) — captures the _depth_ of the same market: a Zigong entrepreneur who spent $280K and one year of scouting...
+
+# 反向，在 kitchen-supply-wholesale-laos-sichuan-entrepreneur.md 加：
+This is the second profile in an informal series on Chinese entrepreneurs in Laos.
+The first — [a Shenzhen University graduate's menswear store in Laos](/posts/from-shenzhen-university-to-laos-clothing-empire/) with a five-month payback claim — captured the _velocity_ of Chinese entrepreneurship.
+```
+
+**判别标准**：两篇文章满足以下任一条件时，应做 series cross-link：
+- 同一地理市场（如都是 Laos / Vientiane）
+- 同一受众（如都是"中国出海创业者"）
+- 同一商业模型变体（如都是"warehouse store"模式）
+
+> 反向链接**只加 1 条**（不要在 E-E-A-T section 里再列一次，避免重复）—— 叙述性内链 + Past coverage 内链 即可形成 2 条连接，足以让爬虫识别为系列。
+
 ---
 
 ## 4. 模块 D：封面图与视觉资产
@@ -357,10 +408,27 @@ in frame except the hand. Subtle bokeh in the background. High-end product
 photography look. Suitable for a niche e-commerce case study blog header.
 ```
 
+**实测案例（menswear cover, photorealistic + bright daylight）**：
+
+```text
+A photorealistic photograph, 1280x720, 16:9 aspect ratio.
+Bright natural daylight streaming through a large glass storefront of a
+small Southeast Asian menswear retail shop. Neatly hung button-down shirts
+and folded trousers on clean white shelving, polished concrete floor
+reflecting soft daylight, a simple wooden counter in the center, mid-morning
+sun creating warm highlights and gentle shadows, the storefront opens to a
+bustling tropical street visible through the glass, real-world documentary
+photography, sharp focus, vibrant yet natural colors, no text overlay, no
+logo, no people in frame, suitable for a cross-border e-commerce case study
+blog header.
+```
+
 **必含约束**：
 - `no text overlay, no logo, no people in frame except [subject]`——避免生成水印或意外人脸
 - `Suitable for a [content type] blog header`——引导风格
 - **全英文 prompt**——模型对英文 prompt 理解更准
+- **写实场景用 `photorealistic photograph` 关键词**（而非 "professional blog cover image" 这种偏插画风的）——对于零售店/办公室/工厂等真实场景，photorealistic 直出更可信
+- **明亮自然光用 `bright natural daylight` + `mid-morning sun`**——避免模型默认走暖色钨丝灯或夜景
 
 ### 4.4 Alt 文本写作公式
 
@@ -389,6 +457,49 @@ grep -oE '<img[^>]*alt="[^"]*"' public/posts/POST-SLUG/index.html
 
 如果返回 `MISSING`，检查 front matter 的 `cover.alt` 字段是否拼写正确。
 
+### 4.6 封面图的迭代生成（不满意的常见场景）
+
+第一版封面图**常常不是终版**。如果首图不满足"写实 + 明亮"，**不要降级接受**——直接修 prompt 重跑。
+
+**常见首图问题与第二轮 prompt 调整**：
+
+| 首图症状 | 原因 | 第二轮 prompt 加什么 |
+|---|---|---|
+| 偏暗 / 室内钨丝灯 | 模型默认走"咖啡馆 / 商店"暖色 | `bright natural daylight` + `mid-morning sun` |
+| 像插画 / 3D 渲染 | 默认走 editorial 风格 | `photorealistic photograph` + `real-world documentary photography` |
+| 颜色饱和度过高 / 像广告 | 默认走"product shot"风格 | `vibrant yet natural colors` + `sharp focus` |
+| 莫名出现人脸 / 文字 | 没强约束 | `no text overlay, no logo, no people in frame` |
+| 模糊 / 像素感低 | size 参数过小 | 显式指定 `1280x720` + `sharp focus` |
+
+**两次生成的实测对比**（menswear cover）：
+
+```text
+# ❌ 第一版（钨丝灯 + muted tones，提交后判定不合格）
+A professional blog cover image, 1280x720, 16:9 aspect ratio. Interior shot
+of a small Southeast Asian menswear retail shop, neatly organized shirts and
+trousers on open clothing racks, soft warm tungsten lighting, ...
+
+# ✅ 第二版（photorealistic + bright daylight，重跑即合格）
+A photorealistic photograph, 1280x720, 16:9 aspect ratio. Bright natural
+daylight streaming through a large glass storefront of a small Southeast
+Asian menswear retail shop. Neatly hung button-down shirts and folded
+trousers on clean white shelving, polished concrete floor reflecting soft
+daylight, a simple wooden counter in the center, mid-morning sun creating
+warm highlights and gentle shadows, ...
+```
+
+**commit 规范**：迭代生成的封面图走独立 commit：
+
+```text
+feat(cover): regenerate <slug> cover with photorealistic bright daylight
+
+Previous cover was shot under warm tungsten lighting with muted tones.
+Replaced with a photorealistic mid-morning natural daylight scene: ...
+
+File: <OLD_SIZE> KB → <NEW_SIZE> KB (still well under 200 KB LCP target)
+Dimensions: 1280x720 JPG unchanged
+```
+
 ---
 
 ## 5. 收尾：语言清理与单位补全
@@ -412,13 +523,30 @@ print('CJK chars found:', cn)
 |---|---|
 | 普通名词 | `餐具` → `dishware` / `桌子` → `table` |
 | 注释性中文（如 `kitchen companion (厨房伴侣)`） | **删除中文括号** |
+| 行内概念解释（如 `shelf-based e-commerce (货架电商)`） | **删除括号 + 括号内的中文**——英文词已自解释，括号是冗余 |
+| 同上变体（如 `livestream commerce (直播电商)`） | 同上处理 |
 | 翻译术语 | 查英文标准译法（参考 Wikipedia / 行业 SaaS 文档） |
+
+**实测案例（from-shenzhen-university 优化）**：
+
+```markdown
+# ❌ 优化前（行内括号解释 CJK 概念，2 处残留）
+He grew up inside the Chinese e-commerce ecosystem — from the early days
+of Taobao (货架电商, shelf-based e-commerce) through the explosion of
+livestream commerce (直播电商).
+
+# ✅ 优化后（删除括号，英文自然流）
+He grew up inside the Chinese e-commerce ecosystem — from the early days
+of Taobao's shelf-based commerce through the explosion of livestream commerce.
+```
 
 **项目先例**：见 `git log --oneline \| grep "remove Chinese terms"`——`2ea75ff fix: remove Chinese terms from Amazon refined-selection post`。
 
-### 5.2 货币单位显式化
+### 5.2 货币与单位显式化
 
-数字前必须明确单位，避免读者混淆（人民币 RMB vs 当地货币 LAK）：
+数字前必须明确单位，避免读者混淆（人民币 RMB vs 当地货币 LAK vs 美元 USD）：
+
+**货币单位**：
 
 ```markdown
 # ❌ 模糊
@@ -430,11 +558,47 @@ print('CJK chars found:', cn)
 | Chinese buyers | Ask 1,000,000 RMB → offer 400,000 RMB |
 ```
 
+**面积单位**（老挝仓库/店面等场景）：
+
+```markdown
+# ❌ 模糊（"1,200 square meters" 重复 + 占用字数）
+Annual rent (1,200 square meters) | ~300,000 RMB
+
+# ✅ 显式（用 sqm 缩写 + 首次出现注明）
+Annual rent (1,200 sqm) | ~300,000 RMB
+```
+
+**USD 等价换算**（海外受众必加）：
+
+```markdown
+# ❌ 海外读者算不出
+Total investment (with inventory) | ~2,000,000 | Ongoing operational capital
+
+# ✅ 关键金额加 USD 换算
+Total investment (with inventory) | ~2,000,000 RMB (~$280K USD) | Ongoing operational capital
+```
+
 ### 5.3 日期 / 修订记录
 
-如果文章被二次修订，**在 front matter 加** `lastmod` 字段（PaperMod 会自动渲染）：
+如果文章被**二次修订**（即优化指南中的 SEO 整改），**在 front matter 加** `lastmod` 字段（PaperMod 会自动渲染在文章页与 sitemap）：
 
 ```yaml
+date: 2026-05-29        # 原始发布日
+lastmod: 2026-06-07     # 上一次优化日
+```
+
+**适用判断**：
+- ✅ 优化 SEO 字段、改 H2、补 E-E-A-T → **加** `lastmod`
+- ✅ 修 CJK 错别字、补外链 → **加** `lastmod`
+- ❌ 仅 git 内部 typo 修正 → 不加（避免给 Google 发"内容刚更新"的假信号）
+
+**实测案例**：在 `from-shenzhen-university-to-laos-clothing-empire.md` 优化时：
+
+```yaml
+# 优化前
+date: 2026-05-29
+
+# 优化后
 date: 2026-05-29
 lastmod: 2026-06-07
 ```
@@ -611,6 +775,8 @@ git push origin main
 | **封面图太大** | 单图 1MB+ | 用 Pillow 转 JPG quality=88，目标 < 200KB |
 | **E-E-A-T 段落无内链** | Past coverage 段是纯文字 | 加 2-3 个 `/posts/...` 链接 |
 | **未指定 `--ref`** | 误以为需要参考图 | 封面图**纯文生图**即可，`ref=None` |
+| **封面图偏暗 / 像插画** | 首图用 "professional blog cover image" + 默认钨丝灯 | 改用 `photorealistic photograph` + `bright natural daylight` 重跑 |
+| **首版封面图接受** | 写实/明亮度不达标也直接 commit | 不达标就 commit 浪费一次，**重跑 prompt 走独立 commit** |
 | **front matter `keywords` 写成 YAML 数组** | Hugo 解析失败 | 写成单行 `keywords: ["a", "b", "c"]` 而非多行 block |
 | **未更新 `cover.image` 引用** | 替换了图片但 front matter 还是旧路径 | sed 替换 `image: "images/OLD-NAME.png"` → `image: "images/NEW-NAME.jpg"` |
 
@@ -643,13 +809,15 @@ mailmineragent-blog/
 │   ├── search.md                          # 搜索页
 │   └── posts/
 │       ├── keyboard-riser-niche-tiktok-hustle.md        # 已优化参考
-│       └── kitchen-supply-wholesale-laos-sichuan-entrepreneur.md  # 已优化参考
+│       ├── kitchen-supply-wholesale-laos-sichuan-entrepreneur.md  # 已优化参考
+│       └── from-shenzhen-university-to-laos-clothing-empire.md    # 已优化参考（与 kitchen-supply 互为 series）
 ├── static/
 │   └── images/                            # 所有封面图、OG image 实际文件
 │       ├── banner2.png                    # 未跟踪，与任务无关
 │       ├── cover_deepseek_cache.jpg       # 历史资产，保留或删除按需
 │       ├── keyboard-riser-tiktok-hustle-cover.jpg
-│       └── kitchen-supply-wholesale-laos-sichuan-cover.jpg
+│       ├── kitchen-supply-wholesale-laos-sichuan-cover.jpg
+│       └── shenzhen-grad-vientiane-menswear-cover.jpg
 ├── themes/PaperMod/                       # ⚠️ 不要修改（升级会冲掉）
 ├── layouts/partials/extend_footer.html    # 项目级 override（51.la 统计）
 └── docs/
