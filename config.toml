@@ -9,16 +9,22 @@ buildFuture = true
 enableRobotsTXT = true
 
 [[menu.main]]
-  identifier = "mailminer"
-  name = "MailMiner"
-  url = "https://mailminer.work"
-  weight = 10
+identifier = "mailminer"
+name = "MailMiner"
+url = "https://mailminer.work"
+weight = 10
 
 [[menu.main]]
-  identifier = "posts"
-  name = "Posts"
-  url = "/posts/"
-  weight = 20
+identifier = "about"
+name = "About"
+url = "/about/"
+weight = 15
+
+[[menu.main]]
+identifier = "posts"
+name = "Posts"
+url = "/posts/"
+weight = 20
 
 [[menu.main]]
   identifier = "search"
