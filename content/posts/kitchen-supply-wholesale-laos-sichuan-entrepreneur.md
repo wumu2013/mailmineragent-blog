@@ -4,7 +4,7 @@ date: 2026-05-29
 draft: false
 tags: ["Entrepreneurship", "Ecommerce", "OverseasExpansion", "SoutheastAsia"]
 keywords: ["kitchen supply wholesale", "vientiane laos", "laos cross-border business", "overseas warehouse store", "sichuan entrepreneur", "chinese entrepreneurs in laos", "southeast asia expansion", "wholesale distribution model"]
-author: "MailMiner Editorial Team"
+author: { name: "MailMiner Editorial Team", url: "/about/" }
 description: "Pan built a $280K, 1,200 sqm kitchen supply warehouse in Vientiane, Laos. Capital, language, localization lessons for cross-border operators."
 cover:
   image: "images/kitchen-supply-wholesale-laos-sichuan-cover.jpg"

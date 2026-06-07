@@ -5,7 +5,7 @@ lastmod: 2026-06-07
 draft: false
 tags: ["ECommerce", "CrossBorderTrade", "Entrepreneurship"]
 keywords: ["tiktok to shopify journey", "spanish ecommerce for beginners", "1688 to europe sourcing", "chinese entrepreneur spain", "autonomo visa ecommerce", "CE marking chinese sellers", "madrid shopify founder", "tiktok shop spain organic"]
-author: "MailMiner Editorial Team"
+author: { name: "MailMiner Editorial Team", url: "/about/" }
 description: "A Chinese immigrant in Madrid built a Spanish e-commerce brand from TikTok to Shopify — €3-5K/month, 1688 sourcing, CE marking lessons. Cross-border case study."
 cover:
   image: "images/spanish-ecommerce-tiktok-shopify-madrid-cover.jpg"

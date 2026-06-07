@@ -40,7 +40,7 @@ weight = 20
 
 [params]
   description = "Technical blog about MailMiner Agent — AI-powered email mining, intelligent automation, and data extraction."
-  author = "MailMiner Team"
+  author = { name = "MailMiner Editorial Team", url = "/about/" }
   defaultTheme = "auto"
   ShowShareButtons = true
   ShowReadingTime = true

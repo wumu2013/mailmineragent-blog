@@ -4,7 +4,7 @@ date: 2026-05-29
 draft: false
 tags: ["Ecommerce", "TikTok", "ProductSelection"]
 keywords: ["keyboard riser niche", "tiktok shop case study", "niche ecommerce playbook", "long nail typing solution", "tiktok organic traffic", "1688 dropshipping", "zero ad spend ecommerce", "tiktok shop beginner"]
-author: "MailMiner Editorial Team"
+author: { name: "MailMiner Editorial Team", url: "/about/" }
 description: "Yes — a beginner sold custom keyboard risers for women with long nail art on TikTok Shop at 30-50 orders/day, $4,000-$8,000 monthly profit, zero ad spend. Full case study with sourcing, content, and replication framework."
 cover:
   image: "images/keyboard-riser-tiktok-hustle-cover.jpg"

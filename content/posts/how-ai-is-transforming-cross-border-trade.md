@@ -5,7 +5,7 @@ lastmod: 2026-06-07
 draft: false
 tags: ["LLM", "AIinBusiness", "CrossBorderTrade"]
 keywords: ["AI in cross-border trade", "AI sales assistant B2B", "made-in-china b2b platform", "barcelona pet store china sourcing", "AI translation for suppliers", "chinese suppliers spain", "tiktok B2B sourcing", "B2B ecommerce AI"]
-author: "MailMiner Editorial Team"
+author: { name: "MailMiner Editorial Team", url: "/about/" }
 description: "A Chinese trade practitioner walks into a Barcelona pet store and finds an AI sales assistant replying in Spanish 24/7. How AI is rewriting B2B sourcing."
 cover:
   image: "images/ai-cross-border-barcelona-pet-store-cover.jpg"
