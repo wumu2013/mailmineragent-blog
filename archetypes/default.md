@@ -5,9 +5,8 @@ lastmod: {{ .Date }}
 draft: true
 tags: []
 keywords: []
-author:
-  name: "MailMiner Editorial Team"
-  url: "/about/"
+# author: omit — site.Params.author is the single source of truth.
+# Post-meta byline auto-links to site.Params.authorUrl (/about/ by default).
 description: ""
 cover:
   image: ""

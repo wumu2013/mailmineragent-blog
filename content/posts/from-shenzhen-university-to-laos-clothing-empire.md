@@ -5,7 +5,6 @@ lastmod: 2026-06-07
 draft: false
 tags: ["Entrepreneurship", "Ecommerce", "OverseasExpansion", "SoutheastAsia"]
 keywords: ["vientiane menswear store", "shenzhen university laos business", "laos cross-border retail", "chinese entrepreneurs southeast asia", "10 country scouting tour", "overseas warehouse model", "vientiane retail investment", "southeast asia expansion"]
-author: { name: "MailMiner Editorial Team", url: "/about/" }
 description: "A Shenzhen University CS grad skipped Big Tech to invest $700K in a Vientiane menswear store. $1,000/day revenue, 5-month payback. Cross-border retail playbook."
 cover:
   image: "images/shenzhen-grad-vientiane-menswear-cover.jpg"
