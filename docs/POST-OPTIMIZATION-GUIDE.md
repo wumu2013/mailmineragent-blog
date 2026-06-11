@@ -237,7 +237,15 @@ date: ...
 
 **位置**：紧跟 front matter 后，第一个 H2 之前。
 
-**实测案例**：
+**优先用 `{{< tldr >}}` shortcode**（见 `docs/SHORTCODE-GUIDE.md` §1）替代手写 `> **TL;DR**` 块引。shortcode 渲染语义化 `<aside role="note">` 而非纯 blockquote，屏幕阅读器和无障碍工具能正确识别为"旁注"而非引用。
+
+```markdown
+{{< tldr >}}
+A regular employee with zero e-commerce background found a hyper-specific niche — custom keyboard risers for women with long nail art. By modifying one dimension (height) and posting simple TikTok demos, they built a steady 30–50 orders per day with zero ad spend. This case study breaks down the "niche-within-a-niche" playbook that beginners can replicate.
+{{< /tldr >}}
+```
+
+如果必须手写（legacy 文章、调试中），仍用 blockquote 形式：
 
 ```markdown
 > **TL;DR** A regular employee with zero e-commerce background found a hyper-specific niche — custom keyboard risers for women with long nail art. By modifying one dimension (height) and posting simple TikTok demos, they built a steady 30–50 orders per day with zero ad spend. This case study breaks down the "niche-within-a-niche" playbook that beginners can replicate.
@@ -266,7 +274,20 @@ E-E-A-T 是文章能否被收录的**决定性因素**（贡献 80%+ 的判断�
 
 ### 3.2 文末 E-E-A-T Section 模板
 
-固定 3 段结构，**复制即用**：
+固定 3 段结构，**优先用 `{{< eeat >}}` shortcode 替代手写**（见 `docs/SHORTCODE-GUIDE.md` §3）。shortcode 在编译期校验 `past` 链接有效性，避免手写时把路径写错导致 404。
+
+`{{< eeat >}}` 用法（替换下面的整段 markdown）：
+
+```markdown
+{{< eeat
+    focus="TikTok Shop organic commerce, niche product selection and 1688 sourcing, solo-seller $0-ad-spend playbooks, and AI tooling for e-commerce operators"
+    past="/posts/from-tiktok-to-shopify-spanish-ecommerce/|Spanish TikTok-to-Shopify founder's journey||/posts/amazon-refined-selection-90-percent-success-framework/|Amazon refined-selection 90% framework"
+    disclosure="Revenue figures ($XXX–$XXX/day, $XK–$XK/month) and operational details (XX–XX orders/day) are reported by the seller, not independently audited. Margin estimates assume a XX–XX% gross margin, typical for this category but variable by supplier and shipping terms."
+    cta="Found a similar niche or have questions about the niche-within-a-niche framework?"
+/>}}
+```
+
+如果必须手写（legacy 文章、调试中），**复制即用**的 3 段结构：
 
 ```markdown
 ---
