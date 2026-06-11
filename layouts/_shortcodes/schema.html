@@ -1,0 +1,111 @@
+{{- /*
+  shortcodes/schema.html
+  ----------------------
+  Emits a JSON-LD block at the position of the shortcode. Use for Schema.org
+  types that are NOT auto-emitted by extend_head.html (i.e. anything other
+  than FAQPage, which is already covered by .Params.faq + extend_head.html).
+
+  Whitelisted types:
+    FAQPage        — uses "questions" + "answers" pipe-delimited params
+    Article        — uses individual metadata params
+    HowTo          — uses "steps" pipe-delimited params
+    BreadcrumbList — uses "items" pipe-delimited "name|url" params
+    Person         — uses "name" + optional "url" + "role"
+    Organization   — uses "name" + "url" + optional "logo"
+    Product        — uses "name" + "description" + "image"
+
+  Usage (FAQPage, alternative to {{< faq >}} if you want only the JSON-LD
+  without the visible HTML block):
+    {{< schema type="FAQPage"
+              questions="Q1?|Q2?"
+              answers="A1.|A2."
+    />}}
+
+  Usage (BreadcrumbList, for custom navigation context):
+    {{< schema type="BreadcrumbList"
+              items="Home|/
+                     Posts|/posts/
+                     This article|/posts/this-slug/"
+    />}}
+
+  Output: a single <script type=application/ld+json>{...}</script> block,
+  minified (no internal whitespace) so it is byte-stable under --minify.
+
+  Unknown types: emit a build error so the mistake is caught at compile
+  time, not at Google's Rich Results Test.
+*/ -}}
+
+{{- $type := .Get "type" | default "" -}}
+{{- /* .Inner consumed to allow self-closing {{< schema ... />}} form. */ -}}
+{{- $_ := .Inner -}}
+
+{{- $supported := slice "FAQPage" "Article" "HowTo" "BreadcrumbList" "Person" "Organization" "Product" -}}
+{{- if not (in $supported $type) -}}
+  {{- errorf "shortcode/schema: unsupported type %q (page=%s). Supported: %s" $type .Page.RelPermalink (delimit $supported ", ") -}}
+{{- end -}}
+
+{{- if eq $type "FAQPage" -}}
+  {{- $qs := .Get "questions" | default "" -}}
+  {{- $as := .Get "answers"   | default "" -}}
+  {{- if and $qs $as -}}
+    {{- $qList := split $qs "|" -}}
+    {{- $aList := split $as "|" -}}
+    {{- if ne (len $qList) (len $aList) -}}
+      {{- errorf "shortcode/schema: FAQPage questions (%d) and answers (%d) differ (page=%s)" (len $qList) (len $aList) .Page.RelPermalink -}}
+    {{- end -}}
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i, $q := $qList -}}{{- if $i -}},{{- end -}}{"@type":"Question","name":{{- $q -}},"acceptedAnswer":{"@type":"Answer","text":{{- index $aList $i -}}}}{{- end -}}]}</script>
+  {{- end -}}
+
+{{- else if eq $type "BreadcrumbList" -}}
+  {{- $items := .Get "items" | default "" -}}
+  {{- if $items -}}
+    {{- /* "items" format: "Name1|Path1||Name2|Path2||..." (|| = row separator;
+       Hugo shortcode params are single-line, so we cannot use "\n".) */ -}}
+    {{- $pairs := split $items "||" -}}
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{{- $idx := 0 -}}{{- range $pairs -}}{{- $trimmed := trim . " \t" -}}{{- if $trimmed -}}{{- $parts := split $trimmed "|" -}}{{- if eq (len $parts) 2 -}}{{- if $idx -}},{{- end -}}{"@type":"ListItem","position":{{- add $idx 1 -}},"name":{{- index $parts 0 -}},"item":{{- $.Site.BaseURL -}}{{- trim (index $parts 1) "/" -}}}{{- $idx = add $idx 1 -}}{{- end -}}{{- end -}}{{- end -}}]}</script>
+  {{- end -}}
+
+{{- else if eq $type "Article" -}}
+  {{- $headline    := .Get "headline"    | default .Page.Title -}}
+  {{- $author      := .Get "author"      | default "MailMiner Editorial Team" -}}
+  {{- $datePub     := .Get "datePublished" | default (.Page.Date.Format "2006-01-02") -}}
+  {{- $dateMod     := .Get "dateModified"  | default (cond (.Page.Lastmod.IsZero) $datePub (.Page.Lastmod.Format "2006-01-02")) -}}
+  {{- $image       := .Get "image"       | default "" -}}
+  {{- $description := .Get "description" | default .Page.Description -}}
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"Article","headline":{{- $headline -}},"author":{"@type":"Person","name":{{- $author -}}},"datePublished":{{- $datePub -}},"dateModified":{{- $dateMod -}}{{- if $image -}},"image":{{- $image -}}{{- end -}}{{- if $description -}},"description":{{- $description -}}{{- end -}}}</script>
+
+{{- else if eq $type "HowTo" -}}
+  {{- $name        := .Get "name"        | default .Page.Title -}}
+  {{- $description := .Get "description" | default "" -}}
+  {{- $steps       := .Get "steps"       | default "" -}}
+  {{- if $steps -}}
+    {{- $stepList := split $steps "|" -}}
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"HowTo","name":{{- $name -}}{{- if $description -}},"description":{{- $description -}}{{- end -}},"step":[{{- range $i, $s := $stepList -}}{{- if $i -}},{{- end -}}{"@type":"HowToStep","position":{{- add $i 1 -}},"text":{{- $s -}}}{{- end -}}]}</script>
+  {{- end -}}
+
+{{- else if eq $type "Person" -}}
+  {{- $name := .Get "name" | default "" -}}
+  {{- $url  := .Get "url"  | default "" -}}
+  {{- $role := .Get "role" | default "" -}}
+  {{- if $name -}}
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"Person","name":{{- $name -}}{{- if $url -}},"url":{{- $url -}}{{- end -}}{{- if $role -}},"jobTitle":{{- $role -}}{{- end -}}}</script>
+  {{- end -}}
+
+{{- else if eq $type "Organization" -}}
+  {{- $name  := .Get "name"  | default "" -}}
+  {{- $url   := .Get "url"   | default "" -}}
+  {{- $logo  := .Get "logo"  | default "" -}}
+  {{- if $name -}}
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"Organization","name":{{- $name -}}{{- if $url -}},"url":{{- $url -}}{{- end -}}{{- if $logo -}},"logo":{{- $logo -}}{{- end -}}}</script>
+  {{- end -}}
+
+{{- else if eq $type "Product" -}}
+  {{- $name        := .Get "name"        | default "" -}}
+  {{- $description := .Get "description" | default "" -}}
+  {{- $image       := .Get "image"       | default "" -}}
+  {{- $sku         := .Get "sku"         | default "" -}}
+  {{- if $name -}}
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"Product","name":{{- $name -}}{{- if $description -}},"description":{{- $description -}}{{- end -}}{{- if $image -}},"image":{{- $image -}}{{- end -}}{{- if $sku -}},"sku":{{- $sku -}}{{- end -}}}</script>
+  {{- end -}}
+
+{{- end -}}

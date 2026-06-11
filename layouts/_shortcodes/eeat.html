@@ -1,0 +1,107 @@
+{{- /*
+  shortcodes/eeat.html
+  --------------------
+  Renders the "About the MailMiner Editorial Team" E-E-A-T block per
+  docs/POST-OPTIMIZATION-GUIDE.md §3.2.
+
+  Usage:
+    {{< eeat
+        focus="TikTok Shop organic commerce, niche product selection, 1688 sourcing, ..."
+        past="/posts/from-tiktok-to-shopify-spanish-ecommerce/|Spanish TikTok-to-Shopify
+              /posts/amazon-refined-selection-90-percent-success-framework/|Amazon refined-selection 90% framework"
+        disclosure="Revenue figures ($XXX–$XXX/day) and operational details (XX–XX orders/day) are reported by the seller, not independently audited. Margin estimates assume a XX–XX% gross margin, typical for this category but variable by supplier and shipping terms."
+        cta="Found a similar niche or have questions about the niche-within-a-niche framework?"
+    />}}
+
+  All four params required EXCEPT cta (default below). The past-coverage
+  links are validated against the page index — a typo'd path emits a
+  build warning rather than silently emitting a 404 link.
+
+  Output structure:
+    <hr>
+    <h2>About the MailMiner Editorial Team</h2>
+    <p>The MailMiner Editorial Team is a group of ...</p>
+    <p><strong>Our focus areas</strong> include {focus}. Past coverage
+       includes a <a href="...">title 1</a> and the <a href="...">title 2</a>.</p>
+    <p><strong>Disclosure:</strong> {disclosure}</p>
+    <blockquote><p>{cta} Reach out via the <a href="/about/">About page</a> — we read every message.</p></blockquote>
+*/ -}}
+
+{{- $focus       := .Get "focus"       | default "" -}}
+{{- $past        := .Get "past"        | default "" -}}
+{{- $disclosure  := .Get "disclosure"  | default "" -}}
+{{- $cta         := .Get "cta"         | default "Found a similar niche or have questions about this framework?" -}}
+{{- /* .Inner consumed to allow self-closing {{< eeat ... />}} form. */ -}}
+{{- $_ := .Inner -}}
+
+{{- if not (or $focus $past $disclosure) -}}
+  {{- errorf "shortcode/eeat: at least one of focus, past, or disclosure is required (page=%s)" .Page.RelPermalink -}}
+{{- end -}}
+
+{{- /* Parse "past" — "||"-separated "path|title" pairs.
+       Hugo shortcode params are single-line, so we cannot use "\n" as a
+       row separator. Use "||" instead. */ -}}
+{{- $pastLinks := slice -}}
+{{- if $past -}}
+  {{- range $line := split $past "||" -}}
+    {{- $trimmed := trim $line " \t" -}}
+    {{- if $trimmed -}}
+      {{- $parts := split $trimmed "|" -}}
+      {{- if eq (len $parts) 2 -}}
+        {{- $path := trim (index $parts 0) " \t" -}}
+        {{- $title := trim (index $parts 1) " \t" -}}
+        {{- /* Validate that the path resolves to a real page in the site index. */ -}}
+        {{- $found := false -}}
+        {{- range $.Site.RegularPages -}}
+          {{- if eq .RelPermalink $path -}}
+            {{- $found = true -}}
+          {{- end -}}
+        {{- end -}}
+        {{- if not $found -}}
+          {{- warnf "shortcode/eeat: past-coverage path %q does not resolve to any page in site index (page=%s). Possible typo or unpublished target." $path $.Page.RelPermalink -}}
+        {{- end -}}
+        {{- $pastLinks = $pastLinks | append (dict "path" $path "title" $title) -}}
+      {{- else -}}
+        {{- warnf "shortcode/eeat: past-coverage line %q is malformed (expected 'path|title'). Skipping." $trimmed -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+<hr>
+
+<h2>About the MailMiner Editorial Team</h2>
+
+<p>The MailMiner Editorial Team is a group of cross-border e-commerce operators, TikTok Shop sellers, and AI tooling builders. We publish case studies drawn from real seller interviews and our own product experiments — never generic theory, never fabricated case studies.</p>
+
+{{- if or $focus $pastLinks }}
+<p>
+  {{- if $focus -}}
+    <strong>Our focus areas</strong> include {{ $focus }}.
+  {{- end -}}
+  {{- if $pastLinks -}}
+    {{- if $focus }} {{ end -}}
+    Past coverage includes
+    {{- range $i, $link := $pastLinks -}}
+      {{- if $i -}}
+        {{- if eq $i (sub (len $pastLinks) 1) -}}
+          , and the
+        {{- else -}}
+          ,
+        {{- end -}}
+      {{- else -}}
+        a
+      {{- end -}}
+      <a href="{{ $link.path }}">{{ $link.title }}</a>
+    {{- end -}}.
+  {{- end -}}
+</p>
+{{- end -}}
+
+{{- if $disclosure }}
+<p><strong>Disclosure:</strong> {{ $disclosure }}</p>
+{{- end -}}
+
+<blockquote>
+  <p>{{ $cta }} Reach out via the <a href="/about/">About page</a> — we read every message.</p>
+</blockquote>

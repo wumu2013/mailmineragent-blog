@@ -1,0 +1,100 @@
+{{- /*
+  shortcodes/faq.html
+  -------------------
+  Renders the FAQ HTML block AND wires up JSON-LD emission via page.Scratch.
+
+  Two modes:
+
+  (A) Frontmatter-driven (DEFAULT — back-compat with existing posts):
+        frontmatter:
+          faq:
+            - q: "Question 1?"
+              a: "Answer 1."
+        body:
+          {{< faq >}}
+      → Renders the visible HTML using .Params.faq.
+      → JSON-LD is emitted by extend_head.html (no scratch needed).
+
+  (B) Inline-driven (for new posts that want shortcode-only authoring):
+        body:
+          {{< faq
+              questions="Question 1?|Question 2?"
+              answers="Answer 1.|Answer 2."
+          >}}
+      → Renders the visible HTML using the inline params.
+      → ALSO writes the same data into page.Scratch "faq_inline", so that
+        extend_head.html picks it up and emits JSON-LD with no frontmatter
+        coupling.
+
+  (C) Hybrid (post has BOTH frontmatter and shortcode):
+      → Shortcode wins for the visible HTML (explicit > implicit).
+      → JSON-LD is still sourced from frontmatter (extend_head.html priority
+        order: frontmatter > scratch). This keeps the head and body in sync
+        when an author migrates partially.
+
+  Visual output (both modes):
+    <section class="faq" itemscope itemtype="https://schema.org/FAQPage">
+      <h2>Frequently Asked Questions</h2>
+      <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+        <h3 itemprop="name">Question 1?</h3>
+        <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+          <p itemprop="text">Answer 1.</p>
+        </div>
+      </div>
+      ...
+    </section>
+
+  Microdata (itemsope/itemtype/itemprop) is intentionally emitted alongside
+  the JSON-LD block — Google reads both, and microdata serves as a fallback
+  for crawlers that strip <script>.
+
+  Body shortcode params:
+    questions  — pipe-separated list of question strings (mode B)
+    answers    — pipe-separated list of answer strings   (mode B)
+    heading    — optional override for the H2 default "Frequently Asked Questions"
+*/ -}}
+
+{{- $inlineQs := .Get "questions" | default "" -}}
+{{- $inlineAs := .Get "answers"   | default "" -}}
+{{- $heading  := .Get "heading"   | default "Frequently Asked Questions" -}}
+{{- /* .Inner is consumed to keep Hugo paired-shortcode parsing happy even when
+       the caller uses self-closing form {{< faq questions="..." />}}. We do
+       not render it; all data comes from the named params. */ -}}
+{{- $_ := .Inner -}}
+
+{{- $faq := slice -}}
+
+{{- /* Determine the source of truth. Shortcode inline params win. */ -}}
+{{- if and $inlineQs $inlineAs -}}
+  {{- $qs := split $inlineQs "|" -}}
+  {{- $as := split $inlineAs "|" -}}
+  {{- if ne (len $qs) (len $as) -}}
+    {{- errorf "shortcode/faq: questions (%d) and answers (%d) counts differ (page=%s)" (len $qs) (len $as) .Page.RelPermalink -}}
+  {{- end -}}
+  {{- range $i, $q := $qs -}}
+    {{- $faq = $faq | append (dict "q" $q "a" (index $as $i)) -}}
+  {{- end -}}
+  {{- /* Publish to page.Scratch so extend_head.html emits JSON-LD */ -}}
+  {{- .Page.Scratch.Set "faq_inline" $faq -}}
+{{- else -}}
+  {{- /* Fall back to frontmatter */ -}}
+  {{- if and .Page.Params.faq (gt (len .Page.Params.faq) 0) -}}
+    {{- $faq = .Page.Params.faq -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len $faq) 0 -}}
+<section class="faq" itemscope itemtype="https://schema.org/FAQPage">
+  <h2>{{ $heading }}</h2>
+  {{- range $faq }}
+  <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+    <h3 itemprop="name">{{ .q }}</h3>
+    <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+      <p itemprop="text">{{ .a }}</p>
+    </div>
+  </div>
+  {{- end }}
+</section>
+{{- else -}}
+  {{- warnf "shortcode/faq: no faq data found (frontmatter or inline params). page=%s" .Page.RelPermalink -}}
+{{- end -}}

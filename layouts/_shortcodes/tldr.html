@@ -1,0 +1,27 @@
+{{- /*
+  shortcodes/tldr.html
+  --------------------
+  Renders a TL;DR summary block (per docs/POST-OPTIMIZATION-GUIDE.md §2.4).
+
+  Usage:
+    {{< tldr >}}
+    Sentence one. Sentence two with **bold number**. Sentence three.
+    {{< /tldr >}}
+
+  Output:
+    <aside class="tldr" role="note">
+      <p><strong>TL;DR</strong> Sentence one. Sentence two with <strong>bold number</strong>. Sentence three.</p>
+    </aside>
+
+  Notes:
+    - Hugo parses the body markdown for inline formatting (**bold**, *italic*, `code`, [link](url)).
+    - The leading "TL;DR" label is added in <strong> for visual scanability.
+    - role="note" matches WAI-ARIA semantics for parenthetical/side commentary.
+*/ -}}
+<aside class="tldr" role="note">
+  <p><strong>TL;DR</strong> {{ .Inner | markdownify }}</p>
+</aside>
+{{- /*
+  PageCSS hook (drop into assets/css/extended/tldr.css if you want visual styling):
+    .tldr { border-left: 3px solid var(--accent); padding: 0.5rem 1rem; background: var(--code-bg); margin: 1.5rem 0; }
+*/ -}}
