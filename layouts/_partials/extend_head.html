@@ -1,23 +1,33 @@
-{{- /* FAQPage JSON-LD — driven by .Params.faq array in frontmatter */ -}}
+{{- /*
+  extend_head.html
+  ----------------
+  Project-level head extensions. Currently:
+    1. FAQPage JSON-LD, sourced from EITHER:
+       a) .Params.faq       — frontmatter form (back-compat with existing posts)
+       b) page.Scratch      — populated by the {{< faq >}} shortcode in inline mode.
+       The two are mutually exclusive: frontmatter wins if present and non-empty;
+       otherwise we read the shortcode's scratch entry.
+
+  All JSON-LD emission logic lives in partials/seo/schema_jsonld.html so
+  the {{< schema >}} shortcode and the auto path can share a single source
+  of truth.
+
+  Refactor note (2026-06-11): the inline `<script>` block was extracted into
+  partials/seo/schema_jsonld.html with byte-identical output. The existing
+  keyboard-riser post must keep rendering an unchanged FAQPage JSON-LD
+  block — verified by diff against the pre-refactor public/ artifact.
+*/ -}}
+
+{{- $faqItems := slice -}}
 {{- if and .Params.faq (gt (len .Params.faq) 0) -}}
-{{- $faq := .Params.faq -}}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {{- range $i, $item := $faq -}}
-    {{- if $i }},{{ end }}
-    {
-      "@type": "Question",
-      "name": {{ $item.q }},
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": {{ $item.a }}
-      }
-    }
-    {{- end }}
-  ]
-}
-</script>
+  {{- $faqItems = .Params.faq -}}
+{{- else -}}
+  {{- $scratch := .Scratch.Get "faq_inline" -}}
+  {{- if $scratch -}}
+    {{- $faqItems = $scratch -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len $faqItems) 0 -}}
+  {{- partial "seo/schema_jsonld.html" (dict "type" "FAQPage" "items" $faqItems "page" .) -}}
 {{- end -}}

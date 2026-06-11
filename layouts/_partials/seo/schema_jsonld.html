@@ -1,0 +1,46 @@
+{{- /*
+  seo/schema_jsonld.html
+  ---------------------
+  Single source of truth for emitting JSON-LD blocks across the site.
+
+  Callers:
+    1. layouts/_partials/extend_head.html — driven by .Params.faq
+       (frontmatter) OR page.Scratch.Get "faq_inline" (shortcode mode).
+    2. layouts/_shortcodes/schema.html   — explicit {{< schema type="X" data="..." >}}.
+
+  Contract:
+    - Dict arg keys:
+        "type"  string  REQUIRED  One of: FAQPage, Article, HowTo,
+                                BreadcrumbList, Person, Organization, Product.
+        "items" []      Optional  Array of {q,a} objects (FAQPage source).
+        "data"  map     Optional  Generic key/value bag for other Schema types.
+        "page"  Page    Optional  Required for relative URL resolution.
+    - Whitelist behavior: unknown types emit a build warning and return empty.
+    - Output: a single <script type=application/ld+json>...</script> block,
+      minified (no internal whitespace) so Hugo's --minify output is byte-stable.
+
+  Whitelist intentionally narrow — extending it requires a deliberate change
+  in the type map below, preventing accidental JSON-LD typos from poisoning
+  Google Rich Results.
+*/ -}}
+
+{{- $type  := .type  | default "" -}}
+{{- $items := .items | default (slice) -}}
+{{- $data  := .data  | default (dict) -}}
+{{- $page  := .page  | default nil -}}
+
+{{- $supported := slice "FAQPage" "Article" "HowTo" "BreadcrumbList" "Person" "Organization" "Product" -}}
+
+{{- if not (in $supported $type) -}}
+  {{- warnf "seo/schema_jsonld: unsupported @type %q (page=%s). Supported: %s" $type (cond (eq $page nil) "?" $page.RelPermalink) (delimit $supported ", ") -}}
+{{- else if eq $type "FAQPage" -}}
+  {{- if gt (len $items) 0 -}}
+<script type=application/ld+json>{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i, $item := $items -}}{{- if $i -}},{{- end -}}{"@type":"Question","name":{{- $item.q -}},"acceptedAnswer":{"@type":"Answer","text":{{- $item.a -}}}}{{- end -}}]}</script>
+  {{- end -}}
+{{- else -}}
+  {{- /* Future: explicit builders for Article / HowTo / BreadcrumbList.
+            For now, JSON-LD beyond FAQPage is only supported via the
+            {{< schema >}} shortcode (which calls this partial with $type
+            outside the whitelist guard and renders directly). */ -}}
+  {{- warnf "seo/schema_jsonld: @type %q is not yet implemented in this partial. Use the {{< schema >}} shortcode for now." $type -}}
+{{- end -}}
